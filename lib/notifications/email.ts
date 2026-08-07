@@ -12,9 +12,9 @@ function fromAddress() {
 function orderSummary(order: Order) {
   return [
     `Order: ${order.orderNumber}`,
-    `Subtotal: ${formatNaira(order.subtotal / 100)}`,
-    `Shipping: ${formatNaira(order.shippingFee / 100)}`,
-    `Total: ${formatNaira(order.total / 100)}`,
+    `Subtotal: ${formatNaira(order.subtotal)}`,
+    `Shipping: ${formatNaira(order.shippingFee)}`,
+    `Total: ${formatNaira(order.total)}`,
   ].join("\n");
 }
 

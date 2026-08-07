@@ -16,6 +16,9 @@ export async function GET(request: NextRequest) {
     collectionId: params.get("collection") ?? undefined,
     dropId: params.get("drop") ?? undefined,
     page: params.get("page") ? Math.max(1, Number(params.get("page"))) : 1,
+    perPage: params.get("perPage")
+      ? Math.min(48, Math.max(1, Number(params.get("perPage"))))
+      : undefined,
   };
 
   const min = params.get("min");

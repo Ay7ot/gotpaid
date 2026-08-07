@@ -139,8 +139,8 @@ export async function searchProducts(filters: ProductFilters = {}): Promise<Prod
   }
   if (filters.inStock === true) where.push(hasStockSql);
   if (filters.inStock === false) where.push(sql`not ${hasStockSql}`);
-  if (filters.minPrice != null) where.push(sql`${minPriceSql} >= ${filters.minPrice}`);
-  if (filters.maxPrice != null) where.push(sql`${minPriceSql} <= ${filters.maxPrice}`);
+  if (filters.minPrice != null) where.push(sql`${minPriceSql} >= ${filters.minPrice * 100}`);
+  if (filters.maxPrice != null) where.push(sql`${minPriceSql} <= ${filters.maxPrice * 100}`);
 
   const orderBy =
     filters.sort === "price-asc"

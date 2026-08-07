@@ -9,8 +9,8 @@ const dateFormatter = new Intl.DateTimeFormat("en-NG", {
   timeZone: "Africa/Lagos",
 });
 
-export function formatNaira(amount: number) {
-  return nairaFormatter.format(amount);
+export function formatNaira(kobo: number) {
+  return nairaFormatter.format(kobo / 100);
 }
 
 export function formatDate(date: Date | string) {

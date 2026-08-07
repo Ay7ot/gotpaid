@@ -142,12 +142,12 @@ export default function DesignSystemPage() {
         <div className="space-y-4">
           <SectionTitle>Credit Alert Card</SectionTitle>
           <CreditAlertCard
-            amount={formatNaira(68000)}
+            amount={formatNaira(6800000)}
             rows={[
               { label: "ORDER", value: "GP-000123" },
               { label: "STATUS", value: "CONFIRMED" },
-              { label: "SHIPPING", value: formatNaira(3500) },
-              { label: "TOTAL", value: formatNaira(71500) },
+              { label: "SHIPPING", value: formatNaira(350000) },
+              { label: "TOTAL", value: formatNaira(7150000) },
             ]}
           />
         </div>
