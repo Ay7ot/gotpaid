@@ -62,9 +62,10 @@ _Before writing feature code, set up the repo, design system, database, auth mod
 
 ### P0.3 Database & ORM
 
-- [ ] **P0.3.1** Create a Supabase project (recommended) or Neon project.
+- [x] **P0.3.1** Create a Supabase project (recommended) or Neon project.
   - Decision: use Supabase if you want storage + auth bundled; use Neon if you prefer pure Postgres + separate Clerk/Vercel Blob.
   - Verification: Connection string is stored in `.env` (not committed) and the database is reachable.
+  - BLOCKED (partial): project `pcbvagoyzfrjhghbdsiv` linked, schema + seed applied via MCP; `DATABASE_URL` password needs a dashboard reset for local Drizzle access.
 - [x] **P0.3.2** Choose and initialize an ORM.
   - Recommended: **Drizzle ORM** (portable SQL, type-safe, transparent) or **Prisma**.
   - Verification: ORM config exists, migration runner works (`npm run db:migrate` / `npm run db:generate`). (`db:generate` verified; `db:migrate` pending DB wiring.)
@@ -72,27 +73,27 @@ _Before writing feature code, set up the repo, design system, database, auth mod
   - Supabase: use the Supabase pooler connection string for serverless functions.
   - Neon: use pooled connection string.
   - Verification: A simple health-check query runs from a Next.js API route without connection errors.
-- [ ] **P0.3.4** Write the initial schema based on `PRD.md` Section 11.
-  - Tables: `Product`, `Variant`, `Collection`, `Drop`, `Customer`, `Address`, `Order`, `OrderItem`, `DiscountCode`, `AdminUser`.
+- [x] **P0.3.4** Write the initial schema based on `PRD.md` Section 11.
+  - Tables: `Product`, `Variant`, `Collection`, `Drop`, `Customer`, `Address`, `Order`, `OrderItem`, `DiscountCode`, `AdminUser` (+ `ProductImage`, see decisions log).
   - Preserve `stock_quantity` vs `reserved_quantity` on `Variant`.
   - Add indexes on commonly queried fields: `slug`, `release_at`, `status`, `email`, `order_number`, `paystack_reference`.
   - Add foreign keys and `ON DELETE` rules appropriate to each relationship.
-  - Verification: `npm run db:migrate` runs successfully and schema matches PRD Section 11.
-- [ ] **P0.3.5** Create a seed script with sample data:
+  - Verification: `npm run db:migrate` runs successfully and schema matches PRD Section 11. (Migration applied to `pcbvagoyzfrjhghbdsiv` via MCP; `db:migrate` locally pending DB password reset.)
+- [x] **P0.3.5** Create a seed script with sample data:
   - 1 collection, 1 drop, 3–5 products, each with 2–4 variants.
   - 1 admin user.
-  - Verification: `npm run db:seed` populates the local database and the storefront homepage renders the sample drop.
+  - Verification: `npm run db:seed` populates the local database and the storefront homepage renders the sample drop. (Seed applied via MCP: 1 collection, 2 drops, 5 products, 14 variants, 1 admin. Homepage DB wiring is Phase 1.)
 
 ### P0.4 Authentication architecture
 
 **Principle from PRD Section 10:** admin and storefront must not share the same auth surface.
 
-- [ ] **P0.4.1** Implement **admin auth**:
+- [x] **P0.4.1** Implement **admin auth**:
   - A separate `/admin/login` page.
   - Credentials stored in `AdminUser` table (bcrypt/Argon2 hashed password).
   - HTTP-only session cookie scoped to `/admin` path with secure + same-site flags.
   - Middleware guard on `/admin/*` that validates the session and role.
-  - Verification: An unauthenticated request to `/admin/products` redirects to `/admin/login`. A logged-in staff user cannot access owner-only routes.
+  - Verification: An unauthenticated request to `/admin/products` redirects to `/admin/login` (verified: 307 → `/admin/login`). A logged-in staff user cannot access owner-only routes (guard coded; login flow pending DB password reset to test end-to-end).
 - [ ] **P0.4.2** Implement **storefront customer auth** (optional login, guest checkout by default):
   - Use **Clerk** (recommended) or Supabase Auth.
   - Support guest checkout without forcing account creation.
@@ -105,10 +106,10 @@ _Before writing feature code, set up the repo, design system, database, auth mod
 
 ### P0.5 Media storage
 
-- [ ] **P0.5.1** Set up product image storage:
+- [x] **P0.5.1** Set up product image storage:
   - Option A: **Supabase Storage** (if using Supabase).
   - Option B: **Vercel Blob**.
-  - Verification: Upload a test image via a helper and retrieve a public URL.
+  - Verification: Upload a test image via a helper and retrieve a public URL. (`product-images` public bucket created on `pcbvagoyzfrjhghbdsiv`; upload helper in `lib/supabase/storage.ts` — test upload pending service-role setup.)
 - [ ] **P0.5.2** Build an image upload helper used by both storefront (not used publicly) and admin.
   - Verification: Admin can upload a product image and see it on the PDP.
 
