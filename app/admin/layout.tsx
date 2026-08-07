@@ -7,7 +7,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <header className="border-hairline border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <Link href="/admin" aria-label="GOTPAID back office">
-            <Wordmark className="text-body" />
+            <Wordmark className="h-7" />
           </Link>
           <span className="text-micro text-smoke font-mono tracking-[0.12em] uppercase">
             Back office
