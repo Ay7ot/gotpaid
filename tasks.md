@@ -22,30 +22,30 @@ _Before writing feature code, set up the repo, design system, database, auth mod
 
 ### P0.1 Project initialization
 
-- [ ] **P0.1.1** Initialize a Next.js project (App Router, TypeScript, Tailwind CSS).
+- [x] **P0.1.1** Initialize a Next.js project (App Router, TypeScript, Tailwind CSS).
   - Verification: `npm run dev` starts without errors; `tsconfig.json` has path aliases (`@/*`, `@/components`, `@/lib`, `@/db`, `@/app/admin`, `@/app/(storefront)`).
-- [ ] **P0.1.2** Add Prettier, ESLint, and a `.env.example` file with every env variable the app will need (database, auth, storage, payment, email, admin secrets).
+- [x] **P0.1.2** Add Prettier, ESLint, and a `.env.example` file with every env variable the app will need (database, auth, storage, payment, email, admin secrets).
   - Verification: `npm run lint` and `npm run format:check` pass on a clean repo.
-- [ ] **P0.1.3** Initialize a Git repo and write a short `README.md` explaining how to run locally and what env vars are required.
+- [x] **P0.1.3** Initialize a Git repo and write a short `README.md` explaining how to run locally and what env vars are required.
   - Verification: `git status` shows a clean working tree after initial commit.
 
 ### P0.2 Design system (from `DESIGN_GUIDE.md`)
 
-- [ ] **P0.2.1** Install fonts:
+- [x] **P0.2.1** Install fonts:
   - Display: **Archivo Black / Archivo Expanded** (Google Fonts or self-hosted).
   - Body: **Inter** or **General Sans**.
   - Mono/utility: **JetBrains Mono** or **IBM Plex Mono**.
   - Verification: All three font families render correctly on a test page.
-- [ ] **P0.2.2** Configure Tailwind with the exact color tokens:
+- [x] **P0.2.2** Configure Tailwind with the exact color tokens:
   - `void`: `#0A0A0A`
   - `paper`: `#F6F5F1`
   - `smoke`: `#8C8B86`
   - `hairline`: `#DEDCD5`
   - `alert`: `#E1362B`
   - Verification: A storyboard/test page shows all five colors with no extra accent colors introduced.
-- [ ] **P0.2.3** Implement typography scale (`12 / 14 / 16 / 20 / 26 / 34 / 48 / 64`) and ensure display type is set in all-caps with tight tracking where required.
+- [x] **P0.2.3** Implement typography scale (`12 / 14 / 16 / 20 / 26 / 34 / 48 / 64`) and ensure display type is set in all-caps with tight tracking where required.
   - Verification: Type scale renders at all sizes without layout shifts.
-- [ ] **P0.2.4** Build the core component set (keep components in `@/components/ui/`):
+- [x] **P0.2.4** Build the core component set (keep components in `@/components/ui/`):
   - `Button` — two variants only: solid (`void` fill, `paper` text) and outline (`void` border). Sharp or 2px-radius corners only.
   - `Input` / `Select` / `Textarea` — underline-style inputs (bottom border only) for storefront; boxed inputs are acceptable only in admin for density.
   - `Badge` — receipt-stamp style (`SOLD OUT`, `LIVE`, `3 LEFT`) in mono type, 1px border, no rounded pills.
@@ -54,7 +54,7 @@ _Before writing feature code, set up the repo, design system, database, auth mod
   - `Footer` — brand story snippet, policy links, social links.
   - `CreditAlertCard` — the receipt/perforated-edge order-confirmation motif.
   - Verification: Open a `/design-system` page (dev-only) displaying every component in both light and admin contexts.
-- [ ] **P0.2.5** Enforce design rules programmatically where possible:
+- [x] **P0.2.5** Enforce design rules programmatically where possible:
   - No `box-shadow` utilities for card separation.
   - No rounded-pill buttons.
   - `alert` only used for sold-out/low-stock, live-drop indicators, errors, sale pricing, and the receipt-stamp motif.
@@ -65,9 +65,9 @@ _Before writing feature code, set up the repo, design system, database, auth mod
 - [ ] **P0.3.1** Create a Supabase project (recommended) or Neon project.
   - Decision: use Supabase if you want storage + auth bundled; use Neon if you prefer pure Postgres + separate Clerk/Vercel Blob.
   - Verification: Connection string is stored in `.env` (not committed) and the database is reachable.
-- [ ] **P0.3.2** Choose and initialize an ORM.
+- [x] **P0.3.2** Choose and initialize an ORM.
   - Recommended: **Drizzle ORM** (portable SQL, type-safe, transparent) or **Prisma**.
-  - Verification: ORM config exists, migration runner works (`npm run db:migrate` / `npm run db:generate`).
+  - Verification: ORM config exists, migration runner works (`npm run db:migrate` / `npm run db:generate`). (`db:generate` verified; `db:migrate` pending DB wiring.)
 - [ ] **P0.3.3** Set up connection pooling.
   - Supabase: use the Supabase pooler connection string for serverless functions.
   - Neon: use pooled connection string.
@@ -114,7 +114,7 @@ _Before writing feature code, set up the repo, design system, database, auth mod
 
 ### P0.6 Provider interfaces (critical for Paystack/WhatsApp unavailability)
 
-- [ ] **P0.6.1** Define `PaymentProvider` interface:
+- [x] **P0.6.1** Define `PaymentProvider` interface:
   ```ts
   interface PaymentProvider {
     initialize(input: { order: Order; amount: number; customerEmail: string; callbackUrl: string }): Promise<{ authorization_url: string; reference: string }>;
@@ -133,7 +133,7 @@ _Before writing feature code, set up the repo, design system, database, auth mod
   - Converts NGN to kobo (`amount * 100`).
   - Verifies Paystack webhook signature header.
   - Verification: Unit tests pass with mocked Paystack responses; integration tests are skipped without `PAYSTACK_SECRET_KEY`.
-- [ ] **P0.6.4** Define `NotificationProvider` interface:
+- [x] **P0.6.4** Define `NotificationProvider` interface:
   ```ts
   interface NotificationProvider {
     sendOrderConfirmation(order: Order, customer: Customer): Promise<void>;
@@ -144,10 +144,10 @@ _Before writing feature code, set up the repo, design system, database, auth mod
   - Verification: TypeScript compiles.
 - [ ] **P0.6.5** Implement `EmailNotificationProvider` using Resend or Postmark.
   - Verification: A test order confirmation email sends successfully in dev.
-- [ ] **P0.6.6** Implement `WhatsAppClickToChatProvider` (v1 fallback):
+- [x] **P0.6.6** Implement `WhatsAppClickToChatProvider` (v1 fallback):
   - Generates `wa.me` links for support and order-sharing.
   - Stores phone numbers so a real WhatsApp Cloud API provider can be swapped in later.
-  - Verification: Clicking support link on a phone opens WhatsApp chat with pre-filled message.
+  - Verification: Clicking support link on a phone opens WhatsApp chat with pre-filled message. (`whatsappLink()` implemented; live check once `SUPPORT_WHATSAPP_NUMBER` is set.)
 
 ---
 
@@ -564,16 +564,18 @@ _Record final decisions here so future agents/developers know why things are the
 
 | Decision | Chosen option | Date | Rationale |
 |---|---|---|---|
-| Single app vs two apps | ? | | |
-| Database | ? | | |
-| ORM | ? | | |
-| Auth — customers | ? | | |
-| Auth — admin | ? | | |
-| Image storage | ? | | |
-| Payment provider (dev) | MockProvider | | Paystack not available yet |
-| Payment provider (live) | Paystack | | PRD hard requirement |
-| Email provider | ? | | |
-| WhatsApp provider (v1) | Click-to-chat | | API not available yet |
+| Single app vs two apps | Single Next.js app, route groups `(storefront)` + `/admin` | 2026-08-07 | PRD §10; admin isolated from storefront auth surface |
+| Database | Supabase (hosted) | 2026-08-07 | User decision; bundles auth + storage |
+| ORM | Drizzle ORM | 2026-08-07 | tasks.md recommendation; portable SQL, type-safe |
+| Auth — customers | Supabase Auth | 2026-08-07 | User decision; guest checkout default per PRD §5.5 |
+| Auth — admin | `AdminUser` table, bcrypt, JWT cookie scoped to `/admin` | 2026-08-07 | tasks.md P0.4.1; separate surface from customers |
+| Image storage | Supabase Storage (`product-images` bucket) | 2026-08-07 | P0.5 Option A |
+| Payment provider (dev) | MockProvider | 2026-08-07 | Paystack not available yet |
+| Payment provider (live) | Paystack | 2026-08-07 | PRD hard requirement |
+| Email provider | Resend | 2026-08-07 | User decision; free tier for dev |
+| WhatsApp provider (v1) | Click-to-chat | 2026-08-07 | API not available yet |
+| Monetary amounts in DB | Integer **kobo** (NGN × 100) | 2026-08-07 | Paystack API uses kobo; avoids float drift |
+| Schema addition | `ProductImage` table added (multi-image PDP) | 2026-08-07 | P1.11.3 requires it; avoids later migration churn |
 
 ---
 
