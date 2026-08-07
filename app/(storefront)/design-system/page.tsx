@@ -73,11 +73,16 @@ export default function DesignSystemPage() {
         <SectionTitle>Type scale</SectionTitle>
         <div className="divide-hairline border-hairline divide-y border-y">
           {typeScale.map(([name, size, className]) => (
-            <div key={name} className="flex items-baseline justify-between gap-6 py-3">
+            <div
+              key={name}
+              className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+            >
               <span className="text-micro text-smoke w-28 shrink-0 font-mono tracking-[0.1em] uppercase">
                 {name} · {size}
               </span>
-              <span className={`${className} font-display tracking-display leading-none uppercase`}>
+              <span
+                className={`${className} font-display tracking-display min-w-0 leading-none [overflow-wrap:anywhere] uppercase`}
+              >
                 GOTPAID
               </span>
             </div>

@@ -40,12 +40,12 @@ export function Countdown({
   ];
 
   return (
-    <div className="border-paper/30 bg-void/60 mt-7 inline-block border p-4 backdrop-blur-sm sm:p-5">
+    <div className="border-paper/30 bg-void/60 mt-7 w-full max-w-md border p-4 backdrop-blur-sm sm:p-5">
       <p className="text-micro text-paper/60 font-mono tracking-[0.18em] uppercase">RELEASES IN</p>
-      <div className="mt-3 flex items-stretch gap-1.5 sm:gap-2">
+      <div className="mt-3 flex items-stretch gap-1.5">
         {cells.map((cell, index) => (
-          <div key={cell.label} className="flex items-stretch gap-1.5 sm:gap-2">
-            <div className="border-paper/25 flex min-w-14 flex-col items-center border px-1 py-2 sm:min-w-16 sm:px-3">
+          <div key={cell.label} className="flex flex-1 items-stretch gap-1.5">
+            <div className="border-paper/25 flex min-w-0 flex-1 flex-col items-center justify-center border px-1 py-2 sm:px-2">
               <span className="text-display-sm text-paper sm:text-display font-mono leading-none">
                 {cell.value}
               </span>
@@ -54,7 +54,7 @@ export function Countdown({
               </span>
             </div>
             {index < cells.length - 1 ? (
-              <span className="text-lead text-alert self-center font-mono">:</span>
+              <span className="text-lead text-alert w-2 shrink-0 self-center font-mono">:</span>
             ) : null}
           </div>
         ))}

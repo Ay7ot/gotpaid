@@ -154,7 +154,7 @@ export function ShopControls({
               </div>
             </div>
 
-            <div className="flex items-end gap-2">
+            <div className="flex flex-wrap items-end gap-2">
               <div>
                 <label
                   htmlFor="min"
