@@ -19,7 +19,7 @@ export async function signAdminSession(payload: AdminSessionPayload) {
     .setProtectedHeader({ alg: ALGORITHM })
     .setSubject(payload.sub)
     .setIssuedAt()
-    .setExpirationTime(ADMIN_SESSION_MAX_AGE)
+    .setExpirationTime(`${ADMIN_SESSION_MAX_AGE}s`)
     .sign(secretKey());
 }
 
