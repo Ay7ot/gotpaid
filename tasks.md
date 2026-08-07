@@ -163,7 +163,7 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
   - Sticky nav that shrinks on scroll.
   - Footer with brand story, policy links, social links.
   - Verification: Layout renders on mobile and desktop; nav shrinks on scroll. (Cart count wiring deferred to P1.5 cart.)
-- [ ] **P1.1.2** Implement cart state indicator in nav:
+- [x] **P1.1.2** Implement cart state indicator in nav:
   - Fetch cart count server-side where possible; update client-side on add-to-cart.
   - Verification: Adding an item increments the cart count without a full reload.
 
@@ -188,40 +188,40 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.3 Product Listing Page (PLP)
 
-- [ ] **P1.3.1** Build collection/category PLP:
+- [x] **P1.3.1** Build collection/category PLP:
   - Grid of product cards.
   - Sold-out products remain visible and marked `SOLD OUT`.
   - Verification: A sold-out product appears in the grid with a clear badge.
-- [ ] **P1.3.2** Implement filters:
+- [x] **P1.3.2** Implement filters:
   - Size, color, category, price range, availability (in stock / sold out).
   - Verification: Each filter updates the results; empty states are handled.
-- [ ] **P1.3.3** Implement sorting:
+- [x] **P1.3.3** Implement sorting:
   - Newest, price low–high, price high–low.
   - Verification: Sorting works and URL reflects the sort state.
-- [ ] **P1.3.4** Choose pagination vs infinite scroll and implement consistently.
+- [x] **P1.3.4** Choose pagination vs infinite scroll and implement consistently.
   - Verification: Performance is acceptable with 50+ products.
 
 ### P1.4 Product Detail Page (PDP)
 
-- [ ] **P1.4.1** Image gallery:
+- [x] **P1.4.1** Image gallery:
   - Multiple angles, swipeable on mobile, zoom on tap.
   - Verification: Images load; swipe/keyboard navigation works.
-- [ ] **P1.4.2** Product info block:
+- [x] **P1.4.2** Product info block:
   - Name (display type), price in mono (`₦68,000.00` format), description, materials, fit notes.
   - Verification: Price formatting is correct; NGN only.
-- [ ] **P1.4.3** Variant/size selector:
+- [x] **P1.4.3** Variant/size selector:
   - Sizes/colors with zero stock shown but disabled (✕ or visually disabled), never hidden.
   - Selecting a variant updates price if `price_override` exists.
   - Verification: Selecting a sold-out size prevents add-to-cart.
-- [ ] **P1.4.4** Stock urgency indicator:
+- [x] **P1.4.4** Stock urgency indicator:
   - "Only 3 left" driven by real `stock_quantity - reserved_quantity`.
   - Never fake.
   - Verification: Update stock in admin; PDP reflects the change.
-- [ ] **P1.4.5** Add to cart and Buy now:
+- [x] **P1.4.5** Add to cart and Buy now:
   - Add to cart keeps user on PDP and updates cart.
   - Buy now goes directly to checkout with the item.
   - Verification: Both actions result in correct cart/checkout state.
-- [ ] **P1.4.6** Related products section.
+- [x] **P1.4.6** Related products section.
   - Verification: Shows products from the same collection or drop.
 
 ### P1.5 Cart

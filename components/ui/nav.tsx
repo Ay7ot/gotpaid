@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Wordmark } from "@/components/ui/wordmark";
+import { useCart } from "@/lib/cart";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -34,6 +35,7 @@ function BagIcon() {
 }
 
 export function Nav() {
+  const { count } = useCart();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -73,13 +75,18 @@ export function Nav() {
           >
             <SearchIcon />
           </button>
-          <button
-            type="button"
-            aria-label="Cart"
+          <Link
+            href="/cart"
+            aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}
             className="text-void hover:text-smoke relative flex h-11 w-11 items-center justify-center transition-colors"
           >
             <BagIcon />
-          </button>
+            {count > 0 ? (
+              <span className="bg-void text-paper text-micro absolute top-0.5 right-0.5 flex h-5 min-w-5 items-center justify-center px-1 font-mono">
+                {count}
+              </span>
+            ) : null}
+          </Link>
         </div>
       </div>
     </header>

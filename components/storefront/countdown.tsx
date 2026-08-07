@@ -54,7 +54,7 @@ export function Countdown({
               </span>
             </div>
             {index < cells.length - 1 ? (
-              <span className="text-lead text-paper/40 self-center font-mono">:</span>
+              <span className="text-lead text-alert self-center font-mono">:</span>
             ) : null}
           </div>
         ))}

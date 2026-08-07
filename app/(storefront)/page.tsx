@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Hero } from "@/components/storefront/hero";
+import { Marquee } from "@/components/storefront/marquee";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ui/product-card";
@@ -39,6 +40,8 @@ export default async function HomePage() {
 
       {drop ? <DropStrip drop={drop} state={state} /> : null}
 
+      <Marquee />
+
       <FeaturedSection products={featured} />
       <CollectionsSection collections={collections} />
       <BrandTeaser />
@@ -49,18 +52,23 @@ export default async function HomePage() {
 function DropStrip({ drop, state }: { drop: Drop; state: DropState }) {
   const isLive = state === "live";
   return (
-    <section className="border-hairline bg-paper border-b">
+    <section className="bg-void text-paper">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div className="flex flex-wrap items-center gap-3">
-          <Badge tone={isLive ? "alert" : "void"}>{isLive ? "LIVE" : "COUNTING DOWN"}</Badge>
+          <Badge
+            tone={isLive ? "alert" : "void"}
+            className={isLive ? undefined : "border-paper text-paper"}
+          >
+            {isLive ? "LIVE" : "COUNTING DOWN"}
+          </Badge>
           <p className="text-caption font-mono tracking-[0.08em] uppercase">{drop.name}</p>
         </div>
-        <p className="text-micro text-smoke font-mono tracking-[0.16em] uppercase">
+        <p className="text-micro text-paper/50 font-mono tracking-[0.16em] uppercase">
           {isLive ? "Shop the drop below" : `Releases ${formatDate(drop.releaseAt)}`}
         </p>
         <Link
           href={`/drops/${drop.slug}`}
-          className="text-micro hover:text-smoke font-mono tracking-[0.16em] uppercase underline underline-offset-4"
+          className="text-micro text-paper hover:text-paper/60 font-mono tracking-[0.16em] uppercase underline underline-offset-4"
         >
           View drop
         </Link>
@@ -140,12 +148,12 @@ function CollectionsSection({
 
 function BrandTeaser() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-      <div className="grid gap-10 sm:grid-cols-2">
+    <section className="bg-void text-paper">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:grid-cols-2 sm:px-6">
         <h2 className="font-display text-display-sm tracking-display sm:text-display leading-[0.95] uppercase">
           Pay. Get the alert. Wear it first.
         </h2>
-        <div className="text-caption text-smoke space-y-4">
+        <div className="text-caption text-paper/70 space-y-4">
           <p>
             GOTPAID is Nigerian streetwear cut in small runs. No restocks, no second chances — when
             a drop sells out, it&rsquo;s gone. Like a message from your bank.
