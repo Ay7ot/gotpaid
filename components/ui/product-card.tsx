@@ -39,11 +39,11 @@ export function ProductCard({
           </Badge>
         ) : null}
       </div>
-      <div className="border-hairline flex items-baseline justify-between gap-4 border-b py-2">
+      <div className="border-hairline border-b py-2">
         <h3 className="text-caption font-mono tracking-[0.04em] uppercase group-hover:underline">
           {name}
         </h3>
-        <p className="text-caption shrink-0 font-mono">{formatNaira(price)}</p>
+        <p className="text-caption mt-1 font-mono break-words">{formatNaira(price)}</p>
       </div>
     </Link>
   );
