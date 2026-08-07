@@ -48,6 +48,7 @@ async function main() {
     .insert(dropTable)
     .values({
       name: "DROP 004 — OKRIKA",
+      slug: "drop-004-okrika",
       description: "Inspired by the streets of Port Harcourt.",
       releaseAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
       status: "live",
@@ -58,6 +59,7 @@ async function main() {
     .insert(dropTable)
     .values({
       name: "DROP 005 — BOLT",
+      slug: "drop-005-bolt",
       description: "Fast. On time. Gone.",
       releaseAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       status: "scheduled",

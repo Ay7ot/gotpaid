@@ -26,11 +26,13 @@ export function ProductCard({
 }: ProductCardProps) {
   return (
     <Link href={href} className={cn("group block", className)}>
-      <div className="border-hairline bg-hairline/40 relative aspect-[4/5] border">
-        {imageSrc ? (
-          // eslint-disable-next-line @next/next/no-img-element -- remote storage images, configured in Phase 1
-          <img src={imageSrc} alt={alt ?? name} className="h-full w-full object-cover" />
-        ) : null}
+      <div className="border-hairline relative aspect-[4/5] overflow-hidden border">
+        {/* eslint-disable-next-line @next/next/no-img-element -- remote/placeholder images */}
+        <img
+          src={imageSrc ?? "/images/product-placeholder.png"}
+          alt={alt ?? name}
+          className="h-full w-full object-cover"
+        />
         {badge ? (
           <Badge tone={badgeTone} className="bg-paper absolute top-3 left-3">
             {badge}

@@ -50,6 +50,7 @@ export const dropTable = pgTable(
       .primaryKey()
       .default(sql`gen_random_uuid()`),
     name: text("name").notNull(),
+    slug: text("slug").notNull(),
     description: text("description"),
     releaseAt: timestamp("release_at", { withTimezone: true }).notNull(),
     endAt: timestamp("end_at", { withTimezone: true }),
@@ -59,7 +60,22 @@ export const dropTable = pgTable(
   (table) => [
     index("drop_release_at_idx").on(table.releaseAt),
     index("drop_status_idx").on(table.status),
+    uniqueIndex("drop_slug_unique").on(table.slug),
   ],
+);
+
+export const dropNotificationTable = pgTable(
+  "drop_notification",
+  {
+    id: uuid("id")
+      .primaryKey()
+      .default(sql`gen_random_uuid()`),
+    dropId: uuid("drop_id").references(() => dropTable.id, { onDelete: "set null" }),
+    email: text("email"),
+    whatsappNumber: text("whatsapp_number"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("drop_notification_drop_idx").on(table.dropId)],
 );
 
 export const productTable = pgTable(
