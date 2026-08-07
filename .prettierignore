@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+build
+public
+package-lock.json
+# Source-of-truth docs — keep as authored
+PRD.md
+DESIGN_GUIDE.md
+tasks.md
