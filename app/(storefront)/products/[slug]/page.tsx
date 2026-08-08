@@ -8,6 +8,7 @@ import { ProductCard } from "@/components/ui/product-card";
 import { db } from "@/db/index";
 import { productTable } from "@/db/schema";
 import { getRelatedProducts, productPrice, productSoldOut } from "@/lib/catalog";
+import { formatDate, isInFuture } from "@/lib/format";
 
 export async function generateMetadata({
   params,
@@ -36,6 +37,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const price = productPrice(product.variants);
   const soldOut = productSoldOut(product.variants);
   const related = await getRelatedProducts(product);
+  const upcoming = Boolean(product.drop && isInFuture(product.drop.releaseAt));
 
   const parentHref = product.collection
     ? `/collections/${product.collection.slug}`
@@ -70,20 +72,34 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <p className="text-caption text-smoke mt-4 max-w-md">{product.description}</p>
           ) : null}
 
-          <PdpBuyBox
-            productId={product.id}
-            slug={product.slug}
-            name={product.name}
-            basePrice={price}
-            variants={product.variants.map((variant) => ({
-              id: variant.id,
-              size: variant.size,
-              color: variant.color,
-              priceOverride: variant.priceOverride,
-              stockQuantity: variant.stockQuantity,
-              reservedQuantity: variant.reservedQuantity,
-            }))}
-          />
+          {upcoming ? (
+            <div className="border-hairline mt-7 border p-5">
+              <p className="text-micro text-alert font-mono tracking-[0.18em] uppercase">
+                Coming soon
+              </p>
+              <p className="text-caption mt-3 font-mono">
+                Releases {formatDate(product.drop!.releaseAt)}
+              </p>
+              <p className="text-caption text-smoke mt-2">
+                Purchase opens the moment the drop goes live.
+              </p>
+            </div>
+          ) : (
+            <PdpBuyBox
+              productId={product.id}
+              slug={product.slug}
+              name={product.name}
+              basePrice={price}
+              variants={product.variants.map((variant) => ({
+                id: variant.id,
+                size: variant.size,
+                color: variant.color,
+                priceOverride: variant.priceOverride,
+                stockQuantity: variant.stockQuantity,
+                reservedQuantity: variant.reservedQuantity,
+              }))}
+            />
+          )}
 
           <dl className="border-hairline text-caption mt-8 space-y-2 border-t pt-5 font-mono">
             {product.category ? (

@@ -16,3 +16,7 @@ export function formatNaira(kobo: number) {
 export function formatDate(date: Date | string) {
   return dateFormatter.format(new Date(date));
 }
+
+export function isInFuture(date: Date | string) {
+  return new Date(date).getTime() > Date.now();
+}

@@ -365,14 +365,14 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.12 Admin: drop management
 
-- [ ] **P1.12.1** Drop list page:
+- [x] **P1.12.1** Drop list page:
   - Show name, status, release time, linked products.
   - Verification: List renders.
-- [ ] **P1.12.2** Drop create/edit:
+- [x] **P1.12.2** Drop create/edit:
   - Fields: name, description, `release_at`, optional `end_at`, linked products.
   - Status: `draft`, `scheduled`, `live`, `ended`.
   - Verification: Creating a scheduled drop hides purchase buttons until release time.
-- [ ] **P1.12.3** Preview mode:
+- [x] **P1.12.3** Preview mode:
   - Staff can view the storefront drop page as it will appear at release.
   - Verification: Preview URL shows countdown/live state without affecting public state.
 
