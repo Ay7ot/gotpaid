@@ -25,3 +25,26 @@ export async function createClient() {
     },
   );
 }
+
+export type CurrentUser = {
+  id: string;
+  email?: string;
+  name?: string;
+};
+
+export async function getCurrentUser(): Promise<CurrentUser | null> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return null;
+    return {
+      id: user.id,
+      email: user.email ?? undefined,
+      name: typeof user.user_metadata?.name === "string" ? user.user_metadata.name : undefined,
+    };
+  } catch {
+    return null;
+  }
+}

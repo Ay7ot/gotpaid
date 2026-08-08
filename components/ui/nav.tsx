@@ -21,6 +21,15 @@ function SearchIcon() {
   );
 }
 
+function UserIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
 function BagIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -34,7 +43,7 @@ function BagIcon() {
   );
 }
 
-export function Nav() {
+export function Nav({ signedIn = false }: { signedIn?: boolean }) {
   const { count } = useCart();
   const [scrolled, setScrolled] = useState(false);
 
@@ -68,6 +77,13 @@ export function Nav() {
           ))}
         </nav>
         <div className="flex items-center gap-1">
+          <Link
+            href={signedIn ? "/account" : "/account/sign-in"}
+            aria-label={signedIn ? "Account" : "Sign in"}
+            className="text-void hover:text-smoke flex h-11 w-11 items-center justify-center transition-colors"
+          >
+            <UserIcon />
+          </Link>
           <button
             type="button"
             aria-label="Search"

@@ -307,12 +307,12 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.8 Customer account (optional for MVP)
 
-- [ ] **P1.8.1** If customer auth is implemented:
+- [x] **P1.8.1** If customer auth is implemented:
   - Order history page.
   - Saved addresses.
   - Basic profile (name, email, phone, WhatsApp).
   - Verification: Logged-in customer can view past orders.
-- [ ] **P1.8.2** If customer auth is deferred to Phase 2:
+- [x] **P1.8.2** If customer auth is deferred to Phase 2:
   - Hide account links from nav.
   - Ensure guest checkout still works fully.
   - Verification: No broken account links in storefront.

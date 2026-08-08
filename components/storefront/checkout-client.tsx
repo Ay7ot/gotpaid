@@ -9,7 +9,15 @@ import { useCart } from "@/lib/cart";
 import { formatNaira } from "@/lib/format";
 import { NIGERIAN_STATES } from "@/lib/nigeria";
 
-export function CheckoutClient({ shippingFee }: { shippingFee: number }) {
+export function CheckoutClient({
+  shippingFee,
+  prefillName,
+  prefillEmail,
+}: {
+  shippingFee: number;
+  prefillName?: string;
+  prefillEmail?: string;
+}) {
   const { items, subtotal } = useCart();
   const [state, formAction, pending] = useActionState(submitCheckout, undefined);
 
@@ -62,11 +70,24 @@ export function CheckoutClient({ shippingFee }: { shippingFee: number }) {
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
               <div>
                 <Label htmlFor="name">Recipient name</Label>
-                <Input id="name" name="name" autoComplete="name" required />
+                <Input
+                  id="name"
+                  name="name"
+                  autoComplete="name"
+                  defaultValue={prefillName}
+                  required
+                />
               </div>
               <div>
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email" type="email" autoComplete="email" required />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  defaultValue={prefillEmail}
+                  required
+                />
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="phone">Phone / WhatsApp</Label>
