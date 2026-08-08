@@ -67,3 +67,18 @@ Source docs: [`PRD.md`](./PRD.md), [`DESIGN_GUIDE.md`](./DESIGN_GUIDE.md), [`tas
 ## Env vars
 
 All environment variables are documented in [`.env.example`](./.env.example). Never commit `.env.local` or real secrets.
+
+## Deploying
+
+The app is **server-rendered** (App Router) — every route renders on the server, so refreshing any page works out of the box on Vercel or Netlify (no static-export/SPA fallback needed). Do **not** set `output: "export"` in `next.config`.
+
+**Vercel** (recommended): connect the repo in the Vercel dashboard, or:
+
+```bash
+npx vercel        # link + deploy
+npx vercel --prod # production
+```
+
+**Netlify**: connect the repo — Netlify auto-detects Next.js (see `netlify.toml`). Build command `npm run build`.
+
+On both, set the same env vars as `.env.local` (project settings → Environment Variables): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `DATABASE_URL`, `ADMIN_SESSION_SECRET`, `PAYMENT_MODE`, `SHIPPING_FEE`, `SUPPORT_WHATSAPP_NUMBER`, plus `RESEND_API_KEY` / Paystack keys when live. Set `PAYMENT_MODE=paystack` and the real keys only when ready to accept real payments.

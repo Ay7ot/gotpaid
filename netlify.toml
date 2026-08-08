@@ -1,0 +1,10 @@
+# Netlify + Next.js (App Router).
+# Connect the repo to Netlify and it auto-detects the Next.js runtime
+# (server-side rendering, middleware, ISR, server actions all supported).
+# This pins the build command and Node version.
+
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "22"
