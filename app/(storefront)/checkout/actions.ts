@@ -41,6 +41,7 @@ export async function submitCheckout(_prevState: CheckoutState, formData: FormDa
     return { error: "Enter your delivery state, city, and street address." };
   }
 
+  let authorizationUrl: string;
   try {
     const order = await createOrder({
       items,
@@ -69,8 +70,10 @@ export async function submitCheckout(_prevState: CheckoutState, formData: FormDa
       .set({ paystackReference: init.reference })
       .where(eq(orderTable.id, order.id));
 
-    redirect(init.authorization_url);
+    authorizationUrl = init.authorization_url;
   } catch (error) {
     return { error: (error as Error).message };
   }
+
+  redirect(authorizationUrl);
 }
