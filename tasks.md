@@ -378,22 +378,22 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.13 Admin: order management
 
-- [ ] **P1.13.1** Order list page:
+- [x] **P1.13.1** Order list page:
   - Filters: status (pending payment, paid, fulfilled, shipped, delivered, cancelled, refunded).
   - Sort by date, total.
   - Search by order number, customer email/phone.
   - Verification: Filtering by status returns correct orders.
-- [ ] **P1.13.2** Order detail page:
+- [x] **P1.13.2** Order detail page:
   - Customer info, line items, payment status synced from provider, shipping address.
   - Verification: All order data displays accurately.
-- [ ] **P1.13.3** Manual status updates:
+- [x] **P1.13.3** Manual status updates:
   - Mark as shipped, add tracking reference, mark delivered.
   - Verification: Status updates persist and trigger notification if implemented.
-- [ ] **P1.13.4** Refund initiation:
+- [x] **P1.13.4** Refund initiation:
   - Call `PaymentProvider.refund(reference, amount)`.
   - Update order status to `refunded` only after provider confirms.
   - Verification: Mock refund works; Paystack refund is stubbed/tested with mocks.
-- [ ] **P1.13.5** Export orders to CSV:
+- [x] **P1.13.5** Export orders to CSV:
   - Export filtered order list.
   - Verification: CSV contains order numbers, totals, statuses, customer emails.
 

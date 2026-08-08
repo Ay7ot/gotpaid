@@ -195,6 +195,7 @@ export const orderTable = pgTable(
     paymentProvider: text("payment_provider").notNull().default("mock"),
     paystackReference: text("paystack_reference"),
     paymentStatus: text("payment_status"),
+    trackingNumber: text("tracking_number"),
     shippingAddressId: uuid("shipping_address_id").references(() => addressTable.id, {
       onDelete: "set null",
     }),
