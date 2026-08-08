@@ -399,17 +399,17 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.14 Admin: customer management
 
-- [ ] **P1.14.1** Customer list:
+- [x] **P1.14.1** Customer list:
   - Search by name/email/phone.
   - Show lifetime value and order count.
   - Verification: Search works.
-- [ ] **P1.14.2** Customer detail:
+- [x] **P1.14.2** Customer detail:
   - Full order history, contact info, addresses.
   - Verification: Customer detail matches orders.
 
 ### P1.15 Admin: inventory overview
 
-- [ ] **P1.15.1** Inventory dashboard:
+- [x] **P1.15.1** Inventory dashboard:
   - Cross-product view of stock levels.
   - Highlight low-stock and out-of-stock variants.
   - Verification: Updating stock in product management reflects here.
