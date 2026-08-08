@@ -352,7 +352,7 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
   - Fields: name, slug (auto-generated), description, category, collection, drop, status.
   - Status: `draft`, `published`, `archived`.
   - Verification: Creating a draft product does not show it on storefront.
-- [ ] **P1.11.3** Multi-image upload with drag-to-reorder:
+- [x] **P1.11.3** Multi-image upload with drag-to-reorder:
   - Store image URLs in an `ProductImage` table with ordering.
   - Verification: Images upload, reorder, and display on PDP in the correct order.
 - [x] **P1.11.4** Variant management:

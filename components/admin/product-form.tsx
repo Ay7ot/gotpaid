@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { saveProduct, uploadProductImage } from "@/app/admin/products/actions";
+import { saveProduct, uploadProductImage } from "@/app/admin/(dashboard)/products/actions";
 import { Button } from "@/components/ui/button";
 import { cn, slugify } from "@/lib/utils";
 

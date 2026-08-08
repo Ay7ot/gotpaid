@@ -7,6 +7,7 @@ import { signOutAdmin } from "@/app/admin/(dashboard)/actions";
 const baseItems: AdminNavItem[] = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/products", label: "Products" },
+  { href: "/admin/collections", label: "Collections" },
   { href: "/admin/drops", label: "Drops" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/customers", label: "Customers" },
