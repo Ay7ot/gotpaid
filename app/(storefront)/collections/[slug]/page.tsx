@@ -75,6 +75,7 @@ export default async function CollectionPage({
 
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <ProductGrid
+          key={buildShopQuery(sp)}
           products={products}
           total={result.total}
           page={result.page}

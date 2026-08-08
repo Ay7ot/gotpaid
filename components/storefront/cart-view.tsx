@@ -115,8 +115,14 @@ export function CartView({ shippingFee }: { shippingFee: number }) {
                 <dd className={cn("text-title")}>{formatNaira(total)}</dd>
               </div>
             </dl>
-            <p className="border-hairline text-micro text-smoke mt-5 border-t pt-4 font-mono tracking-[0.1em] uppercase">
-              Checkout is next — coming in the next build pass.
+            <Link
+              href="/checkout"
+              className="bg-void text-caption text-paper hover:bg-void/90 mt-6 flex w-full items-center justify-center px-6 py-3 font-mono tracking-[0.12em] uppercase transition-colors"
+            >
+              Checkout · {formatNaira(total)}
+            </Link>
+            <p className="border-hairline text-micro text-smoke mt-4 border-t pt-4 font-mono tracking-[0.1em] uppercase">
+              Card · Transfer · USSD via Paystack
             </p>
           </aside>
         </div>

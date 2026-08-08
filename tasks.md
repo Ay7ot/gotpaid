@@ -243,33 +243,33 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.6 Checkout
 
-- [ ] **P1.6.1** Guest checkout by default; optional account creation/login.
+- [x] **P1.6.1** Guest checkout by default; optional account creation/login.
   - Verification: A new visitor can complete checkout without creating an account.
-- [ ] **P1.6.2** Nigerian shipping address form:
+- [x] **P1.6.2** Nigerian shipping address form:
   - Fields: recipient name, phone, email, state, city, street address, landmark (optional).
   - No rigid ZIP code requirement.
   - Validation: phone number format, required fields.
   - Verification: Form accepts a valid Lagos address; rejects incomplete input.
-- [ ] **P1.6.3** Shipping method/cost:
+- [x] **P1.6.3** Shipping method/cost:
   - v1: flat rate (e.g., `SHIPPING_FEE` env var).
   - Schema structured to support per-zone rates later.
   - Verification: Shipping fee adds correctly to order total.
-- [ ] **P1.6.4** Order review step:
+- [x] **P1.6.4** Order review step:
   - Show line items, shipping address, shipping fee, discount (if applied), total.
   - Verification: Review page matches cart and address data exactly.
-- [ ] **P1.6.5** Discount code input (UI only for MVP if backend codes not yet implemented):
+- [x] **P1.6.5** Discount code input (UI only for MVP if backend codes not yet implemented):
   - If discount codes are not implemented in Phase 1, hide the input or show "coming soon".
   - Do not ship a broken discount field.
   - Verification: Code path is clean; no console errors.
 
 ### P1.7 Payments & order completion
 
-- [ ] **P1.7.1** Create pending order on checkout submit:
+- [x] **P1.7.1** Create pending order on checkout submit:
   - Generate unique `order_number` and `paystack_reference` (or generic `payment_reference`).
   - Reserve stock for a short window (e.g., 10–15 minutes) using `reserved_quantity`.
   - Store `payment_provider` = `mock` or `paystack`.
   - Verification: Order row created with status `pending` and correct totals.
-- [ ] **P1.7.2** Initialize payment:
+- [x] **P1.7.2** Initialize payment:
   - Server calls `PaymentProvider.initialize(...)`.
   - For Paystack: redirect customer to hosted checkout or open Inline popup.
   - For mock: redirect to mock checkout page.
@@ -278,7 +278,7 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
   - On return from Paystack/mock, server verifies transaction via `PaymentProvider.verify(reference)`.
   - Do not trust client-side redirect alone.
   - Verification: Success path marks order paid; failure path keeps order pending and shows retry message.
-- [ ] **P1.7.4** Webhook handler:
+- [x] **P1.7.4** Webhook handler:
   - Endpoint: `/api/webhooks/paystack` (or provider-agnostic `/api/webhooks/payment`).
   - Verify Paystack signature header.
   - Idempotency: check current order status before applying transition.
@@ -288,7 +288,7 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
     - Mock webhook triggers correctly.
     - Sending the same webhook twice does not double-decrement stock.
     - Tampered webhook signature is rejected.
-- [ ] **P1.7.5** Atomic stock decrement:
+- [x] **P1.7.5** Atomic stock decrement:
   - Use a database transaction: `UPDATE Variant SET stock_quantity = stock_quantity - qty, reserved_quantity = reserved_quantity - qty WHERE available >= qty`.
   - If stock insufficient, mark order as `payment_received_insufficient_stock` and alert admin.
   - Verification: Concurrent checkouts for the last unit do not oversell.
@@ -296,7 +296,7 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
   - A cron/scheduled function that finds `pending` orders older than 5–10 minutes and re-verifies with Paystack.
   - Or use a queue (e.g., Inngest, QStash, or Supabase cron + edge function).
   - Verification: A pending order with a real successful Paystack payment is caught and marked paid by the job.
-- [ ] **P1.7.7** Order confirmation page:
+- [x] **P1.7.7** Order confirmation page:
   - Display order number, items, total, shipping address.
   - Styled with the "Credit Alert" receipt motif (mono type, bordered ticket, perforated edge).
   - Verification: Page matches the design guide; data is accurate.
