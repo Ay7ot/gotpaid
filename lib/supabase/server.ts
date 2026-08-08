@@ -43,8 +43,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
     return {
       id: user.id,
       email: user.email ?? undefined,
-      name:
-        typeof user.user_metadata?.name === "string" ? user.user_metadata.name : undefined,
+      name: typeof user.user_metadata?.name === "string" ? user.user_metadata.name : undefined,
     };
   } catch {
     return null;

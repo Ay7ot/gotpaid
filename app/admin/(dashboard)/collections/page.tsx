@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { deleteCollection } from "@/app/admin/(dashboard)/collections/actions";
 import { CollectionForm } from "@/components/admin/collection-form";
+import { ConfirmButton } from "@/components/admin/confirm-button";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/db/index";
 import { productTable } from "@/db/schema";
@@ -47,6 +49,7 @@ export default async function AdminCollectionsPage() {
               <th className="py-2 pr-4 font-normal">Slug</th>
               <th className="py-2 pr-4 font-normal">Products</th>
               <th className="py-2 pr-4 font-normal" />
+              <th className="py-2 pr-4 font-normal" />
             </tr>
           </thead>
           <tbody>
@@ -72,6 +75,13 @@ export default async function AdminCollectionsPage() {
                 </td>
                 <td className="py-2 pr-4 text-right">
                   <Badge tone="smoke">{collection.slug}</Badge>
+                </td>
+                <td className="py-2 pr-4 text-right">
+                  <ConfirmButton
+                    action={deleteCollection}
+                    id={collection.id}
+                    className="text-micro text-smoke hover:text-alert font-mono"
+                  />
                 </td>
               </tr>
             ))}

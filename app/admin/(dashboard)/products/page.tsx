@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { deleteProduct } from "@/app/admin/(dashboard)/products/actions";
 import { AdminProductsToolbar } from "@/components/admin/admin-products-toolbar";
+import { ConfirmButton } from "@/components/admin/confirm-button";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/db/index";
 import { basePrice, getAdminProducts, stockSummary, type ProductStatus } from "@/lib/admin";
@@ -67,6 +69,7 @@ export default async function AdminProductsPage({
               <th className="py-2 pr-4 font-normal">Stock</th>
               <th className="py-2 pr-4 font-normal">Collection</th>
               <th className="py-2 pr-4 font-normal">Drop</th>
+              <th className="py-2 pr-4 font-normal" />
             </tr>
           </thead>
           <tbody>
@@ -114,6 +117,13 @@ export default async function AdminProductsPage({
                   </td>
                   <td className="py-2 pr-4">{product.collection?.name ?? "-"}</td>
                   <td className="py-2 pr-4">{product.drop?.name ?? "-"}</td>
+                  <td className="py-2 pr-4 text-right">
+                    <ConfirmButton
+                      action={deleteProduct}
+                      id={product.id}
+                      className="text-micro text-smoke hover:text-alert font-mono"
+                    />
+                  </td>
                 </tr>
               );
             })}

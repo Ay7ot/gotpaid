@@ -38,3 +38,22 @@ export async function createCollection(formData: FormData): Promise<CollectionRe
     return { error: (error as Error).message };
   }
 }
+
+export async function deleteCollection(formData: FormData): Promise<CollectionResult> {
+  const session = await getAdminSession();
+  if (!session) return { error: "Not authorized." };
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return { error: "Missing collection id." };
+
+  try {
+    await db.delete(collectionTable).where(eq(collectionTable.id, id));
+    revalidatePath("/");
+    revalidatePath("/admin/products");
+    revalidatePath("/admin/collections");
+    updateTag("catalog");
+    return { ok: true };
+  } catch (error) {
+    return { error: (error as Error).message };
+  }
+}

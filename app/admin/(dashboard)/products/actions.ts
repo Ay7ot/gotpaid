@@ -134,6 +134,25 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
   }
 }
 
+export async function deleteProduct(formData: FormData): Promise<SaveResult> {
+  const session = await getAdminSession();
+  if (!session) return { error: "Not authorized." };
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return { error: "Missing product id." };
+
+  try {
+    await db.delete(productTable).where(eq(productTable.id, id));
+    revalidatePath("/");
+    revalidatePath("/shop");
+    revalidatePath("/admin/products");
+    updateTag("catalog");
+    return { ok: true };
+  } catch (error) {
+    return { error: (error as Error).message };
+  }
+}
+
 export async function uploadProductImage(
   formData: FormData,
 ): Promise<{ url?: string; error?: string }> {
