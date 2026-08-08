@@ -9,7 +9,7 @@ import { Wordmark } from "@/components/ui/wordmark";
 import { formatNaira } from "@/lib/format";
 
 export const metadata: Metadata = {
-  title: "Design System — GOTPAID",
+  title: "Design System - GOTPAID",
 };
 
 const colors = [
@@ -47,12 +47,12 @@ export default function DesignSystemPage() {
       <div>
         <Wordmark />
         <p className="text-micro text-smoke mt-2 font-mono tracking-[0.14em] uppercase">
-          Design system — dev only
+          Design system - dev only
         </p>
       </div>
 
       <section className="space-y-4">
-        <SectionTitle>Color — 5 tokens</SectionTitle>
+        <SectionTitle>Color - 5 tokens</SectionTitle>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
           {colors.map(([name, hex]) => (
             <div key={name} className="border-hairline border">

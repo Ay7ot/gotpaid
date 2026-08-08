@@ -47,7 +47,7 @@ export function CheckoutClient({
         Checkout
       </h1>
       <p className="text-caption text-smoke mt-2 font-mono tracking-[0.16em] uppercase">
-        No account needed — pay, get the alert.
+        No account needed - pay, get the alert.
       </p>
 
       {state?.error ? (

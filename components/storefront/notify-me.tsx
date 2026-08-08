@@ -13,7 +13,7 @@ export function NotifyMe({ dropId, className }: { dropId: string; className?: st
     <div className={cn("mt-7 max-w-xl", className)}>
       {state?.success ? (
         <p className="border-paper/30 text-caption text-paper border px-4 py-3 font-mono">
-          YOU&rsquo;RE ON THE LIST — CREDIT ALERT INCOMING.
+          YOU&rsquo;RE ON THE LIST - CREDIT ALERT INCOMING.
         </p>
       ) : (
         <form action={formAction} className="space-y-3">

@@ -16,7 +16,7 @@ export function ProductGallery({ images, name }: { images: GalleryImage[]; name:
         {/* eslint-disable-next-line @next/next/no-img-element -- remote/placeholder images */}
         <img
           src={current?.url ?? "/images/product-placeholder.png"}
-          alt={current?.alt ?? `${name} — image pending`}
+          alt={current?.alt ?? `${name} - image pending`}
           className="h-full w-full object-cover"
         />
         {!current ? (

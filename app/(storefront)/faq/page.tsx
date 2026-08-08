@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { ContentPage } from "@/components/storefront/content-page";
 
 export const metadata: Metadata = {
-  title: "FAQ — GOTPAID",
-  description: "GOTPAID frequently asked questions — the answers, straight.",
+  title: "FAQ - GOTPAID",
+  description: "GOTPAID frequently asked questions - the answers, straight.",
 };
 
 const FAQS: { q: string; a: string }[] = [
@@ -17,15 +17,15 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How do I know my order went through?",
-    a: "You get your credit-alert receipt the moment payment confirms, plus a confirmation email. No alert, no order — message us and we'll check.",
+    a: "You get your credit-alert receipt the moment payment confirms, plus a confirmation email. No alert, no order - message us and we'll check.",
   },
   {
     q: "What payment methods do you take?",
-    a: "Card, bank transfer, and USSD — all through Paystack. You pay in naira, however is easiest for you.",
+    a: "Card, bank transfer, and USSD - all through Paystack. You pay in naira, however is easiest for you.",
   },
   {
     q: "How long does delivery take?",
-    a: "Lagos: 1–2 business days. Rest of Nigeria: 2–5 business days. After processing.",
+    a: "Lagos: 1-2 business days. Rest of Nigeria: 2-5 business days. After processing.",
   },
   {
     q: "I ordered the wrong size.",
@@ -33,7 +33,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Can I get notified about future drops?",
-    a: "Yes — drop your email or WhatsApp on any upcoming drop's page and we'll give you a heads-up before it goes live.",
+    a: "Yes - drop your email or WhatsApp on any upcoming drop's page and we'll give you a heads-up before it goes live.",
   },
   {
     q: "Do you ship outside Nigeria?",
@@ -41,7 +41,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Is the stock real?",
-    a: "Completely. What you see on the site is what's in the warehouse — updated live. No fake scarcity, ever.",
+    a: "Completely. What you see on the site is what's in the warehouse - updated live. No fake scarcity, ever.",
   },
 ];
 
@@ -50,7 +50,7 @@ export default function FaqPage() {
     <ContentPage
       eyebrow="Questions"
       title="FAQ"
-      intro="The answers, straight. If yours isn't here, WhatsApp us — we reply fast."
+      intro="The answers, straight. If yours isn't here, WhatsApp us - we reply fast."
     >
       <section>
         <div className="divide-hairline border-hairline divide-y border-y">

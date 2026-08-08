@@ -5,7 +5,7 @@ import { SUPPORT_WHATSAPP_NUMBER } from "@/lib/env";
 import { whatsappLink } from "@/lib/notifications/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Contact — GOTPAID",
+  title: "Contact - GOTPAID",
   description: "Reach GOTPAID on WhatsApp or email. Real people, Nigerian business hours.",
 };
 
@@ -14,11 +14,11 @@ export default function ContactPage() {
     <ContentPage
       eyebrow="Talk to us"
       title="Contact"
-      intro="Real people, Nigerian business hours. WhatsApp is fastest — that's how we've always done business."
+      intro="Real people, Nigerian business hours. WhatsApp is fastest - that's how we've always done business."
     >
       <ContentSection title="WhatsApp">
         <p>
-          The fastest way to reach us. Order issues, size help, drop questions — send it straight to
+          The fastest way to reach us. Order issues, size help, drop questions - send it straight to
           the phone.
         </p>
         <a
@@ -34,7 +34,7 @@ export default function ContactPage() {
 
       <ContentSection title="Quick message">
         <p>
-          Prefer to type it out? Write it here and we&rsquo;ll pick it up on WhatsApp — no app
+          Prefer to type it out? Write it here and we&rsquo;ll pick it up on WhatsApp - no app
           switching required.
         </p>
         <div className="max-w-md">
@@ -44,7 +44,7 @@ export default function ContactPage() {
 
       <ContentSection title="Email">
         <p>
-          For anything long-form — partnerships, wholesale, the press.{" "}
+          For anything long-form - partnerships, wholesale, the press.{" "}
           <a
             href="mailto:on@gotpaid.ng"
             className="text-caption hover:text-smoke font-mono underline underline-offset-4"
@@ -56,7 +56,7 @@ export default function ContactPage() {
 
       <ContentSection title="Hours">
         <p>
-          Mon–Sat, 9am–7pm WAT. Outside those hours we&rsquo;re sleeping — like everybody else — but
+          Mon-Sat, 9am-7pm WAT. Outside those hours we&rsquo;re sleeping - like everybody else - but
           we read everything in the morning.
         </p>
       </ContentSection>

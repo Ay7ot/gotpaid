@@ -6,7 +6,7 @@ import { getProductFacets, searchProducts } from "@/lib/catalog";
 import { buildShopQuery, parseShopParams, type SearchParamValue } from "@/lib/shop-filters";
 
 export const metadata: Metadata = {
-  title: "Shop — GOTPAID",
+  title: "Shop - GOTPAID",
   description: "Shop GOTPAID. Nigerian streetwear in small runs. Sold-out drops stay visible.",
 };
 

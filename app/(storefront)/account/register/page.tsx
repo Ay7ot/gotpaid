@@ -53,7 +53,7 @@ export default function RegisterPage() {
         Create account
       </h1>
       <p className="text-caption text-smoke mt-2 font-mono">
-        No account needed to buy — this is optional.
+        No account needed to buy - this is optional.
       </p>
 
       {error ? (

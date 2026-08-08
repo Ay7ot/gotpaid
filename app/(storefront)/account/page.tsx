@@ -8,7 +8,7 @@ import { formatDate, formatNaira } from "@/lib/format";
 import { getCurrentUser } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Account — GOTPAID",
+  title: "Account - GOTPAID",
   description: "Your GOTPAID account and orders.",
 };
 
@@ -48,25 +48,25 @@ export default async function AccountPage() {
           <dl className="text-caption mt-4 grid gap-3 font-mono sm:grid-cols-2">
             <div className="border-hairline flex justify-between gap-4 border-b pb-2">
               <dt className="text-smoke">Name</dt>
-              <dd>{account.name ?? "—"}</dd>
+              <dd>{account.name ?? "-"}</dd>
             </div>
             <div className="border-hairline flex justify-between gap-4 border-b pb-2">
               <dt className="text-smoke">Phone</dt>
-              <dd>{account.phone ?? "—"}</dd>
+              <dd>{account.phone ?? "-"}</dd>
             </div>
             <div className="border-hairline flex justify-between gap-4 border-b pb-2">
               <dt className="text-smoke">Email</dt>
-              <dd>{account.email ?? "—"}</dd>
+              <dd>{account.email ?? "-"}</dd>
             </div>
             <div className="border-hairline flex justify-between gap-4 border-b pb-2">
               <dt className="text-smoke">WhatsApp</dt>
-              <dd>{account.whatsappNumber ?? "—"}</dd>
+              <dd>{account.whatsappNumber ?? "-"}</dd>
             </div>
           </dl>
         </section>
       ) : (
         <p className="border-hairline text-caption text-smoke mt-10 border-t pt-8 font-mono">
-          No profile yet — place an order and it&rsquo;ll appear here.
+          No profile yet - place an order and it&rsquo;ll appear here.
         </p>
       )}
 

@@ -7,7 +7,7 @@ import { getOrderByNumber } from "@/lib/orders";
 import { formatDate, formatNaira } from "@/lib/format";
 
 export const metadata: Metadata = {
-  title: "Order — GOTPAID",
+  title: "Order - GOTPAID",
   description: "Your GOTPAID order.",
 };
 
@@ -52,7 +52,7 @@ export default async function OrderPage({
       {failed ? (
         <div className="border-alert mt-6 border px-4 py-3">
           <p className="text-micro text-alert font-mono tracking-[0.1em] uppercase">
-            Payment didn&rsquo;t go through. Nothing was charged — try again.
+            Payment didn&rsquo;t go through. Nothing was charged - try again.
           </p>
           <div className="mt-4">
             <PaymentRetry orderNumber={order.orderNumber} />
@@ -93,7 +93,7 @@ export default async function OrderPage({
                   {item.productName ?? "Item"}
                 </p>
                 <p className="text-micro text-smoke mt-0.5 font-mono uppercase">
-                  {item.variantLabel ?? "—"} × {item.quantity}
+                  {item.variantLabel ?? "-"} × {item.quantity}
                 </p>
               </div>
               <p className="text-caption shrink-0 font-mono">

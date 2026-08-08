@@ -3,7 +3,7 @@ import { CartView } from "@/components/storefront/cart-view";
 import { SHIPPING_FEE } from "@/lib/env";
 
 export const metadata: Metadata = {
-  title: "Cart — GOTPAID",
+  title: "Cart - GOTPAID",
   description: "Your GOTPAID cart.",
 };
 

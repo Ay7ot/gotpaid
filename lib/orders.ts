@@ -152,7 +152,7 @@ export async function createOrder(input: NewOrderInput) {
           ),
         );
       if (reserved.count === 0) {
-        throw new Error("Stock changed — please review your cart.");
+        throw new Error("Stock changed - please review your cart.");
       }
     }
 

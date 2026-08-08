@@ -23,7 +23,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "GOTPAID",
-  description: "GOTPAID — Nigerian streetwear. Limited drops.",
+  description: "GOTPAID - Nigerian streetwear. Limited drops.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -56,7 +56,7 @@ export function Footer() {
       </div>
       <div className="border-paper/10 border-t">
         <p className="text-micro text-paper/40 mx-auto max-w-6xl px-4 py-4 font-mono tracking-[0.12em] uppercase">
-          © {new Date().getFullYear()} GOTPAID — PAY, GET THE ALERT.
+          © {new Date().getFullYear()} GOTPAID - PAY, GET THE ALERT.
         </p>
       </div>
     </footer>

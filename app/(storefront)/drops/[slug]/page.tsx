@@ -12,9 +12,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const drop = await getDropBySlug(slug);
-  if (!drop) return { title: "Drop not found — GOTPAID" };
+  if (!drop) return { title: "Drop not found - GOTPAID" };
   return {
-    title: `${drop.name} — GOTPAID`,
+    title: `${drop.name} - GOTPAID`,
     description: drop.description ?? `Shop ${drop.name}.`,
   };
 }
@@ -62,7 +62,7 @@ export default async function DropPage({ params }: { params: Promise<{ slug: str
 
       {products.length === 0 ? (
         <p className="text-caption text-smoke py-20 text-center font-mono tracking-[0.14em] uppercase">
-          Nothing here yet — check back at release.
+          Nothing here yet - check back at release.
         </p>
       ) : null}
     </div>

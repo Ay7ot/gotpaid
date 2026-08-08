@@ -21,18 +21,18 @@ function orderSummary(order: Order) {
 export const EmailNotificationProvider: NotificationProvider = {
   async sendOrderConfirmation(order: Order, customer: Customer) {
     if (!resend) {
-      console.warn("RESEND_API_KEY not set — skipping order confirmation email");
+      console.warn("RESEND_API_KEY not set - skipping order confirmation email");
       return;
     }
     if (!customer.email) {
-      console.warn("Customer has no email — skipping order confirmation email");
+      console.warn("Customer has no email - skipping order confirmation email");
       return;
     }
     await resend.emails.send({
       from: fromAddress(),
       to: customer.email,
-      subject: `GOTPAID — Order ${order.orderNumber} confirmed`,
-      text: `Your GOTPAID order is confirmed.\n\n${orderSummary(order)}\n\nQuestions? WhatsApp the store: ${process.env.SUPPORT_WHATSAPP_NUMBER ?? "—"}`,
+      subject: `GOTPAID - Order ${order.orderNumber} confirmed`,
+      text: `Your GOTPAID order is confirmed.\n\n${orderSummary(order)}\n\nQuestions? WhatsApp the store: ${process.env.SUPPORT_WHATSAPP_NUMBER ?? "-"}`,
     });
   },
 
@@ -42,7 +42,7 @@ export const EmailNotificationProvider: NotificationProvider = {
     await resend.emails.send({
       from: fromAddress(),
       to: "customer@example.com",
-      subject: `GOTPAID — Order ${order.orderNumber} shipped`,
+      subject: `GOTPAID - Order ${order.orderNumber} shipped`,
       text: `Your order ${order.orderNumber} is on the way.\n\n${orderSummary(order)}`,
     });
   },
@@ -53,7 +53,7 @@ export const EmailNotificationProvider: NotificationProvider = {
     await resend.emails.send({
       from: fromAddress(),
       to: destination,
-      subject: `GOTPAID — ${drop.name} is live`,
+      subject: `GOTPAID - ${drop.name} is live`,
       text: `${drop.name} has dropped. Shop it now before it's gone.`,
     });
   },

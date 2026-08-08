@@ -4,7 +4,7 @@ import { CartProvider } from "@/lib/cart";
 import { getOrderByNumber } from "@/lib/orders";
 
 export const metadata = {
-  title: "Mock Checkout — GOTPAID",
+  title: "Mock Checkout - GOTPAID",
 };
 
 export default async function MockCheckoutPage({

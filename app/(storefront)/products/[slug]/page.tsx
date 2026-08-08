@@ -18,9 +18,9 @@ export async function generateMetadata({
   const product = await db.query.productTable.findFirst({
     where: eq(productTable.slug, slug),
   });
-  if (!product) return { title: "Product not found — GOTPAID" };
+  if (!product) return { title: "Product not found - GOTPAID" };
   return {
-    title: `${product.name} — GOTPAID`,
+    title: `${product.name} - GOTPAID`,
     description: product.description ?? `Shop ${product.name} at GOTPAID.`,
   };
 }
@@ -94,7 +94,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             ) : null}
             <div className="flex justify-between gap-4">
               <dt className="text-smoke">SKU</dt>
-              <dd>{product.variants[0]?.sku ?? "—"}</dd>
+              <dd>{product.variants[0]?.sku ?? "-"}</dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt className="text-smoke">Status</dt>

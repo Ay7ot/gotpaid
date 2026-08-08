@@ -45,7 +45,7 @@ export function MockPayment({ orderNumber, total }: { orderNumber: string; total
     <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-12">
       <div className="border-void bg-paper border p-6">
         <p className="text-micro text-smoke font-mono tracking-[0.16em] uppercase">
-          Mock payment — dev only
+          Mock payment - dev only
         </p>
         <p className="text-caption mt-2 font-mono">
           Order <span className="text-void">{orderNumber}</span>

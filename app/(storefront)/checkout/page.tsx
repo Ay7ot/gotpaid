@@ -4,7 +4,7 @@ import { SHIPPING_FEE } from "@/lib/env";
 import { getCurrentUser } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Checkout — GOTPAID",
+  title: "Checkout - GOTPAID",
   description: "Complete your GOTPAID order.",
 };
 

@@ -4,7 +4,7 @@ import { SUPPORT_WHATSAPP_NUMBER } from "@/lib/env";
 import { whatsappLink } from "@/lib/notifications/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Returns & Exchanges — GOTPAID",
+  title: "Returns & Exchanges - GOTPAID",
   description: "GOTPAID returns and exchange policy. Unworn, tags on, within 7 days.",
 };
 
@@ -28,7 +28,7 @@ export default function ReturnsPage() {
       <ContentSection title="The catch">
         <p>
           Because drops are limited, we can&rsquo;t guarantee your size will still be around by the
-          time an exchange comes back. If it&rsquo;s gone, we refund the full amount instead — no
+          time an exchange comes back. If it&rsquo;s gone, we refund the full amount instead - no
           restocking fee, no argument.
         </p>
       </ContentSection>
@@ -45,7 +45,7 @@ export default function ReturnsPage() {
           {[
             "Message us on WhatsApp with your order number and what's wrong.",
             "We approve it and give you the return address.",
-            "Send it back — unworn, tags on, original packaging.",
+            "Send it back - unworn, tags on, original packaging.",
             "We swap it or refund you in full.",
           ].map((step, index) => (
             <li key={step} className="flex gap-4">

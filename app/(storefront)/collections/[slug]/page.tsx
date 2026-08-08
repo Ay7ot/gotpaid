@@ -18,9 +18,9 @@ export async function generateMetadata({
   const collection = await db.query.collectionTable.findFirst({
     where: eq(collectionTable.slug, slug),
   });
-  if (!collection) return { title: "Collection not found — GOTPAID" };
+  if (!collection) return { title: "Collection not found - GOTPAID" };
   return {
-    title: `${collection.name} — GOTPAID`,
+    title: `${collection.name} - GOTPAID`,
     description: collection.description ?? undefined,
   };
 }

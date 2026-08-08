@@ -11,7 +11,7 @@ import type { CatalogProduct, DropState } from "@/lib/catalog";
 import type { Drop } from "@/db/schema";
 
 export const metadata: Metadata = {
-  title: "GOTPAID — Nigerian Streetwear",
+  title: "GOTPAID - Nigerian Streetwear",
   description:
     "GOTPAID is Nigerian streetwear cut in small runs. Limited drops, no restocks. Pay, get the alert, wear it first.",
 };
@@ -155,7 +155,7 @@ function BrandTeaser() {
         </h2>
         <div className="text-caption text-paper/70 space-y-4">
           <p>
-            GOTPAID is Nigerian streetwear cut in small runs. No restocks, no second chances — when
+            GOTPAID is Nigerian streetwear cut in small runs. No restocks, no second chances - when
             a drop sells out, it&rsquo;s gone. Like a message from your bank.
           </p>
           <p>

@@ -4,7 +4,7 @@ import { SUPPORT_WHATSAPP_NUMBER } from "@/lib/env";
 import { whatsappLink } from "@/lib/notifications/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Size Guide — GOTPAID",
+  title: "Size Guide - GOTPAID",
   description: "GOTPAID size guide and fit notes. Measurements in centimetres.",
 };
 
@@ -15,7 +15,7 @@ export default function SizeGuidePage() {
     <ContentPage
       eyebrow="Reference"
       title="Size guide"
-      intro="Measurements in centimetres. Every piece has its own fit — read the notes before you pick."
+      intro="Measurements in centimetres. Every piece has its own fit - read the notes before you pick."
     >
       <ContentSection title="Tees & long sleeves">
         <DataTable
@@ -43,18 +43,18 @@ export default function SizeGuidePage() {
       <ContentSection title="Fit notes">
         <ul className="list-none space-y-3">
           <li>
-            <span className="text-smoke font-mono">Tees & long sleeves —</span> boxy cut. Size down
+            <span className="text-smoke font-mono">Tees & long sleeves -</span> boxy cut. Size down
             for fitted, stay true for the intended baggy drop.
           </li>
           <li>
-            <span className="text-smoke font-mono">Cargos —</span> tapered leg. If you&rsquo;re
+            <span className="text-smoke font-mono">Cargos -</span> tapered leg. If you&rsquo;re
             between sizes, size up. You&rsquo;d rather the waist be roomy than tight.
           </li>
           <li>
-            <span className="text-smoke font-mono">Beanie —</span> one size. Stretches to fit.
+            <span className="text-smoke font-mono">Beanie -</span> one size. Stretches to fit.
           </li>
           <li>
-            <span className="text-smoke font-mono">Pre-shrunk —</span> washed and dried before
+            <span className="text-smoke font-mono">Pre-shrunk -</span> washed and dried before
             cutting. What you order is the size you get, after the wash too.
           </li>
         </ul>

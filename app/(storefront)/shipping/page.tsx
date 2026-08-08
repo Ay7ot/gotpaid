@@ -4,7 +4,7 @@ import { SHIPPING_FEE } from "@/lib/env";
 import { formatNaira } from "@/lib/format";
 
 export const metadata: Metadata = {
-  title: "Shipping — GOTPAID",
+  title: "Shipping - GOTPAID",
   description: "GOTPAID shipping timelines, fees, and how your order reaches you.",
 };
 
@@ -17,7 +17,7 @@ export default function ShippingPage() {
     >
       <ContentSection title="How it works">
         <p>
-          Orders are processed within 1–2 business days after payment confirms. The moment you pay,
+          Orders are processed within 1-2 business days after payment confirms. The moment you pay,
           you get your credit-alert receipt. When your order leaves us, you get a shipping update
           with the courier details.
         </p>
@@ -27,12 +27,12 @@ export default function ShippingPage() {
         <DataTable
           head={["Destination", "Delivery time"]}
           rows={[
-            ["Lagos (mainland & island)", "1–2 business days"],
-            ["Rest of Nigeria", "2–5 business days"],
+            ["Lagos (mainland & island)", "1-2 business days"],
+            ["Rest of Nigeria", "2-5 business days"],
           ]}
         />
         <p>
-          Timelines start after processing. During a drop, allow a little extra — we move a lot in
+          Timelines start after processing. During a drop, allow a little extra - we move a lot in
           one day.
         </p>
       </ContentSection>
@@ -47,7 +47,7 @@ export default function ShippingPage() {
       <ContentSection title="Tracking">
         <p>
           Every order gets a shipping update the moment it leaves us. If anything&rsquo;s unclear,
-          message us — real people, real answers, Nigerian business hours.
+          message us - real people, real answers, Nigerian business hours.
         </p>
       </ContentSection>
     </ContentPage>
