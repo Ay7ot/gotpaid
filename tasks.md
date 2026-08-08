@@ -330,14 +330,14 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.10 Admin CRM: shell & auth
 
-- [ ] **P1.10.1** Admin layout:
+- [x] **P1.10.1** Admin layout:
   - `paper` background throughout.
   - Sidebar nav: Products, Drops, Orders, Customers, Inventory.
   - Top bar with admin name, role badge, logout.
   - Verification: Admin area is visually distinct from storefront.
-- [ ] **P1.10.2** Admin login page and session handling:
+- [x] **P1.10.2** Admin login page and session handling:
   - Verification: Only `AdminUser` credentials work; customers cannot log in here.
-- [ ] **P1.10.3** Role-based access control:
+- [x] **P1.10.3** Role-based access control:
   - Owner sees everything; staff sees Products/Drops/Orders/Customers/Inventory but not financial reports or staff management.
   - Verification: A `staff` account cannot access owner routes (test via middleware/API guards).
 
