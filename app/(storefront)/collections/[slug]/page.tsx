@@ -55,16 +55,28 @@ export default async function CollectionPage({
   return (
     <div className="pt-14">
       <header className="mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="text-micro text-smoke font-mono tracking-[0.18em] uppercase">Collection</p>
-        <h1 className="font-display text-display tracking-display mt-2 leading-[0.95] uppercase">
-          {collection.name}
-        </h1>
-        {collection.description ? (
-          <p className="text-caption text-smoke mt-3 max-w-md">{collection.description}</p>
+        {collection.image ? (
+          <div className="border-hairline bg-void relative aspect-[16/7] overflow-hidden border">
+            {/* eslint-disable-next-line @next/next/no-img-element -- storage images */}
+            <img
+              src={collection.image}
+              alt={collection.name}
+              className="h-full w-full object-cover"
+            />
+          </div>
         ) : null}
-        <p className="text-caption text-smoke mt-3 font-mono tracking-[0.16em] uppercase">
-          {result.total} {result.total === 1 ? "piece" : "pieces"}
-        </p>
+        <div className={collection.image ? "mt-8" : undefined}>
+          <p className="text-micro text-smoke font-mono tracking-[0.18em] uppercase">Collection</p>
+          <h1 className="font-display text-display tracking-display mt-2 leading-[0.95] uppercase">
+            {collection.name}
+          </h1>
+          {collection.description ? (
+            <p className="text-caption text-smoke mt-3 max-w-md">{collection.description}</p>
+          ) : null}
+          <p className="text-caption text-smoke mt-3 font-mono tracking-[0.16em] uppercase">
+            {result.total} {result.total === 1 ? "piece" : "pieces"}
+          </p>
+        </div>
       </header>
 
       <div className="mt-8">

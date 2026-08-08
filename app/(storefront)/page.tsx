@@ -115,28 +115,42 @@ function CollectionsSection({
   return (
     <section className="border-hairline bg-paper border-y">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <h2 className="text-micro text-smoke font-mono tracking-[0.18em] uppercase">Collections</h2>
-        <div className="mt-7 grid gap-4 sm:grid-cols-2">
+        <div className="border-hairline flex items-center justify-between border-b pb-3">
+          <h2 className="text-micro text-smoke font-mono tracking-[0.18em] uppercase">
+            Collections
+          </h2>
+        </div>
+        <div className="mt-7 grid gap-6 sm:grid-cols-2">
           {collections.map((collection) => (
             <Link
               key={collection.id}
               href={`/collections/${collection.slug}`}
-              className="group border-hairline hover:border-void flex min-h-48 flex-col justify-between border p-6 transition-colors sm:p-8"
+              className="group block"
             >
-              <div>
-                <p className="font-display text-title tracking-display leading-none uppercase group-hover:underline">
-                  {collection.name}
-                </p>
-                {collection.description ? (
-                  <p className="text-caption text-smoke mt-3 max-w-sm">{collection.description}</p>
-                ) : null}
+              <div className="border-hairline bg-void relative aspect-[4/3] overflow-hidden border">
+                {collection.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- storage images
+                  <img
+                    src={collection.image}
+                    alt={collection.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <span className="text-micro text-paper/40 font-mono tracking-[0.22em] uppercase">
+                      {collection.name}
+                    </span>
+                  </div>
+                )}
               </div>
-              <div className="border-hairline mt-10 flex items-center justify-between border-t pt-4">
-                <span className="text-micro text-smoke font-mono tracking-[0.16em] uppercase">
+              <div className="border-hairline flex items-baseline justify-between gap-4 border-b py-2">
+                <h3 className="font-display text-title tracking-display uppercase group-hover:underline">
+                  {collection.name}
+                </h3>
+                <span className="text-micro text-smoke shrink-0 font-mono tracking-[0.14em] uppercase">
                   {collection.products.length}{" "}
                   {collection.products.length === 1 ? "piece" : "pieces"}
                 </span>
-                <span className="text-micro font-mono tracking-[0.16em] uppercase">Explore →</span>
               </div>
             </Link>
           ))}

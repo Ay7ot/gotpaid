@@ -2,7 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { createCollection } from "@/app/admin/(dashboard)/collections/actions";
+import {
+  createCollection,
+  uploadCollectionImage,
+} from "@/app/admin/(dashboard)/collections/actions";
 import { Button } from "@/components/ui/button";
 import { slugify } from "@/lib/utils";
 
@@ -15,8 +18,24 @@ export function CollectionForm() {
   const [slug, setSlug] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleUpload(file: File) {
+    setUploading(true);
+    setError(null);
+    const formData = new FormData();
+    formData.set("file", file);
+    const result = await uploadCollectionImage(formData);
+    setUploading(false);
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+    if (result.url) setImage(result.url);
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,16 +45,13 @@ export function CollectionForm() {
     formData.set("name", name);
     formData.set("slug", slug || slugify(name));
     formData.set("description", description);
+    formData.set("image", image);
     const result = await createCollection(formData);
     setBusy(false);
     if (result.error) {
       setError(result.error);
       return;
     }
-    setName("");
-    setSlug("");
-    setSlugTouched(false);
-    setDescription("");
     router.refresh();
   }
 
@@ -49,6 +65,7 @@ export function CollectionForm() {
           {error}
         </p>
       ) : null}
+
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
           <span className="text-micro text-smoke mb-1 block font-mono tracking-[0.12em] uppercase">
@@ -88,6 +105,41 @@ export function CollectionForm() {
           />
         </label>
       </div>
+
+      <div>
+        <span className="text-micro text-smoke mb-1 block font-mono tracking-[0.12em] uppercase">
+          Cover image
+        </span>
+        {image ? (
+          <div className="flex items-start gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element -- storage images */}
+            <img src={image} alt="Collection cover" className="h-24 w-36 object-cover" />
+            <button
+              type="button"
+              onClick={() => setImage("")}
+              className="text-micro text-smoke hover:text-alert font-mono underline underline-offset-4"
+            >
+              Remove
+            </button>
+          </div>
+        ) : (
+          <label className="border-hairline text-micro hover:border-void inline-block cursor-pointer border px-4 py-2 font-mono tracking-[0.12em] uppercase">
+            {uploading ? "Uploading…" : "Upload cover"}
+            <input
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              disabled={uploading}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) void handleUpload(file);
+                e.target.value = "";
+              }}
+            />
+          </label>
+        )}
+      </div>
+
       <Button type="submit" disabled={busy}>
         {busy ? "Creating…" : "Create collection"}
       </Button>
