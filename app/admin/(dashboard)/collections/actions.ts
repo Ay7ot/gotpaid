@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/db/index";
 import { collectionTable } from "@/db/schema";
 import { getAdminSession } from "@/lib/admin/session";
@@ -32,6 +32,7 @@ export async function createCollection(formData: FormData): Promise<CollectionRe
     revalidatePath("/");
     revalidatePath("/admin/products");
     revalidatePath("/admin/collections");
+    updateTag("catalog");
     return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };

@@ -1,5 +1,22 @@
 import { and, asc, desc, eq, gt, inArray, ne, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db/index";
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
+
+function cached<F extends (...args: never[]) => Promise<unknown>>(
+  fn: F,
+  key: string,
+  revalidate = 60,
+): F {
+  const wrapped = cache((...args: Parameters<F>) =>
+    unstable_cache(() => fn(...args), [key, ...args.map((arg) => JSON.stringify(arg))], {
+      revalidate,
+      tags: ["catalog"],
+    })(),
+  );
+  return wrapped as F;
+}
+
 import {
   collectionTable,
   dropTable,
@@ -50,7 +67,7 @@ function buildProductWhere() {
   return eq(productTable.status, "published");
 }
 
-export async function getPrimaryDrop(): Promise<
+async function getPrimaryDropRaw(): Promise<
   | { drop: null; state: "none" }
   | { drop: typeof dropTable.$inferSelect; state: "live" | "upcoming" }
 > {
@@ -69,19 +86,19 @@ export async function getPrimaryDrop(): Promise<
   return { drop: null, state: "none" };
 }
 
-export function getFeaturedProducts(limit = 4) {
+function getFeaturedProductsRaw(limit = 4) {
   return productsWithPrice(buildProductWhere(), limit);
 }
 
-export async function getDropBySlug(slug: string) {
+async function getDropBySlugRaw(slug: string) {
   return db.query.dropTable.findFirst({ where: eq(dropTable.slug, slug) });
 }
 
-export function getDropProducts(dropId: string) {
+function getDropProductsRaw(dropId: string) {
   return productsWithPrice(and(buildProductWhere(), eq(productTable.dropId, dropId)));
 }
 
-export async function getCollections() {
+async function getCollectionsRaw() {
   return db.query.collectionTable.findMany({
     with: { products: { where: eq(productTable.status, "published") } },
     orderBy: asc(collectionTable.name),
@@ -121,7 +138,7 @@ const hasStockSql = sql<boolean>`exists (
   where v.product_id = ${productTable.id} and (v.stock_quantity - v.reserved_quantity) > 0
 )`;
 
-export async function searchProducts(filters: ProductFilters = {}): Promise<ProductSearchResult> {
+async function searchProductsRaw(filters: ProductFilters = {}): Promise<ProductSearchResult> {
   const page = Math.max(1, filters.page ?? 1);
   const perPage = Math.min(48, Math.max(1, filters.perPage ?? 12));
 
@@ -201,7 +218,7 @@ async function attachPricing(products: Product[]): Promise<CatalogProduct[]> {
   }));
 }
 
-export async function getRelatedProducts(product: Product, limit = 4) {
+async function getRelatedProductsRaw(product: Product, limit = 4) {
   const where: SQL[] = [buildProductWhere(), ne(productTable.id, product.id)];
   if (product.collectionId) {
     where.push(eq(productTable.collectionId, product.collectionId));
@@ -213,7 +230,7 @@ export async function getRelatedProducts(product: Product, limit = 4) {
   return productsWithPrice(and(...where), limit);
 }
 
-export async function getProductFacets() {
+async function getProductFacetsRaw() {
   const [categories, sizes] = await Promise.all([
     db
       .selectDistinct({ category: productTable.category })
@@ -230,3 +247,12 @@ export async function getProductFacets() {
     sizes: sizes.map((s) => s.size).filter((s): s is string => Boolean(s)),
   };
 }
+
+export const getPrimaryDrop = cached(getPrimaryDropRaw, "getPrimaryDrop");
+export const getFeaturedProducts = cached(getFeaturedProductsRaw, "getFeaturedProducts");
+export const getDropBySlug = cached(getDropBySlugRaw, "getDropBySlug");
+export const getDropProducts = cached(getDropProductsRaw, "getDropProducts");
+export const getCollections = cached(getCollectionsRaw, "getCollections");
+export const searchProducts = cached(searchProductsRaw, "searchProducts");
+export const getRelatedProducts = cached(getRelatedProductsRaw, "getRelatedProducts");
+export const getProductFacets = cached(getProductFacetsRaw, "getProductFacets");

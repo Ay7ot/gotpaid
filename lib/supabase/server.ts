@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -32,7 +33,7 @@ export type CurrentUser = {
   name?: string;
 };
 
-export async function getCurrentUser(): Promise<CurrentUser | null> {
+export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   try {
     const supabase = await createClient();
     const {
@@ -42,9 +43,10 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     return {
       id: user.id,
       email: user.email ?? undefined,
-      name: typeof user.user_metadata?.name === "string" ? user.user_metadata.name : undefined,
+      name:
+        typeof user.user_metadata?.name === "string" ? user.user_metadata.name : undefined,
     };
   } catch {
     return null;
   }
-}
+});

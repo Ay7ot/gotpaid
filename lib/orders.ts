@@ -1,4 +1,5 @@
 import { randomInt } from "node:crypto";
+import { revalidateTag } from "next/cache";
 import { and, eq, gte, inArray, sql } from "drizzle-orm";
 import { db } from "@/db/index";
 import {
@@ -161,6 +162,7 @@ export async function createOrder(input: NewOrderInput) {
 
   const order = await getOrderByNumber(orderNumber);
   if (!order) throw new Error("Order could not be created.");
+  revalidateTag("catalog", "max");
   return order;
 }
 
@@ -176,7 +178,7 @@ export async function getOrderByNumber(orderNumber: string) {
 }
 
 export async function markOrderPaid(orderNumber: string): Promise<Order> {
-  return db.transaction(async (tx) => {
+  const result = await db.transaction(async (tx) => {
     const [order] = await tx
       .select()
       .from(orderTable)
@@ -231,10 +233,12 @@ export async function markOrderPaid(orderNumber: string): Promise<Order> {
       .returning();
     return updated;
   });
+  revalidateTag("catalog", "max");
+  return result;
 }
 
 export async function releaseReservation(orderNumber: string) {
-  return db.transaction(async (tx) => {
+  await db.transaction(async (tx) => {
     const [order] = await tx
       .select()
       .from(orderTable)
@@ -256,4 +260,5 @@ export async function releaseReservation(orderNumber: string) {
         .where(eq(variantTable.id, item.variantId));
     }
   });
+  revalidateTag("catalog", "max");
 }
