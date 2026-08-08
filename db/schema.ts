@@ -249,6 +249,19 @@ export const discountCodeTable = pgTable(
   (table) => [uniqueIndex("discount_code_unique").on(table.code)],
 );
 
+export const rateLimitTable = pgTable(
+  "rate_limit",
+  {
+    id: uuid("id")
+      .primaryKey()
+      .default(sql`gen_random_uuid()`),
+    key: text("key").notNull(),
+    windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
+    count: integer("count").notNull().default(0),
+  },
+  (table) => [uniqueIndex("rate_limit_key_window_unique").on(table.key, table.windowStart)],
+);
+
 export const adminUserTable = pgTable(
   "admin_user",
   {

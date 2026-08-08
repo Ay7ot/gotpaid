@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { db } from "@/db/index";
 import { adminUserTable } from "@/db/schema";
 import { ADMIN_SESSION_COOKIE, ADMIN_SESSION_MAX_AGE, signAdminSession } from "@/lib/admin/session";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { firstError, loginSchema } from "@/lib/validators";
 
 const DUMMY_HASH = hashSync("gotpaid-dummy-password", 12);
 
@@ -17,6 +19,15 @@ export async function login(_prevState: LoginState, formData: FormData) {
     .trim()
     .toLowerCase();
   const password = String(formData.get("password") ?? "");
+
+  const parsed = loginSchema.safeParse({ email, password });
+  if (!parsed.success) return { error: firstError(parsed.error) };
+
+  const ip = await getClientIp();
+  const limited = await checkRateLimit(`login:${email}:${ip}`, 5, 900);
+  if (!limited.ok) {
+    return { error: "Too many attempts. Try again in 15 minutes." };
+  }
 
   const admin = await db.query.adminUserTable.findFirst({
     where: eq(adminUserTable.email, email),

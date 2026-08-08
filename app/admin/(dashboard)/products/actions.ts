@@ -7,6 +7,8 @@ import { productImageTable, productTable, variantTable } from "@/db/schema";
 import { getAdminSession } from "@/lib/admin/session";
 import { PRODUCT_IMAGES_BUCKET, uploadToStorage } from "@/lib/supabase/storage";
 import { slugify } from "@/lib/utils";
+import { productImageSchema, productVariantSchema } from "@/lib/validators";
+import { z } from "zod";
 
 export type SaveResult = { error?: string; ok?: boolean };
 
@@ -29,15 +31,8 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
   }
   const status = statusRaw as "draft" | "published" | "archived";
 
-  let variants: {
-    id?: string;
-    size?: string;
-    color?: string;
-    sku?: string;
-    price?: string;
-    stock?: string;
-  }[] = [];
-  let images: { id?: string; url: string; alt?: string }[] = [];
+  let variants: unknown = [];
+  let images: unknown = [];
 
   try {
     variants = JSON.parse(String(formData.get("variants") ?? "[]"));
@@ -45,6 +40,13 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
   } catch {
     return { error: "Invalid variant or image data." };
   }
+
+  const variantsParsed = z.array(productVariantSchema).safeParse(variants);
+  if (!variantsParsed.success) return { error: "Invalid variant data." };
+  const imagesParsed = z.array(productImageSchema).safeParse(images);
+  if (!imagesParsed.success) return { error: "Invalid image data." };
+  const validVariants = variantsParsed.data;
+  const validImages = imagesParsed.data;
 
   if (!name) return { error: "Name is required." };
   if (!slug) slug = slugify(name);
@@ -75,7 +77,9 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
       productId = created.id;
     }
 
-    const submittedVariantIds = variants.map((v) => v.id).filter((x): x is string => Boolean(x));
+    const submittedVariantIds = validVariants
+      .map((v) => v.id)
+      .filter((x): x is string => Boolean(x));
     await db
       .delete(variantTable)
       .where(
@@ -84,7 +88,7 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
           submittedVariantIds.length ? notInArray(variantTable.id, submittedVariantIds) : undefined,
         ),
       );
-    for (const v of variants) {
+    for (const v of validVariants) {
       const values = {
         size: v.size?.trim() || null,
         color: v.color?.trim() || null,
@@ -99,7 +103,7 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
       }
     }
 
-    const submittedImageIds = images.map((i) => i.id).filter((x): x is string => Boolean(x));
+    const submittedImageIds = validImages.map((i) => i.id).filter((x): x is string => Boolean(x));
     await db
       .delete(productImageTable)
       .where(
@@ -110,7 +114,7 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
             : undefined,
         ),
       );
-    for (const [index, image] of images.entries()) {
+    for (const [index, image] of validImages.entries()) {
       const values = {
         url: image.url,
         alt: image.alt?.trim() || null,

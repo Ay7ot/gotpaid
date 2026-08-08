@@ -7,6 +7,7 @@ import { collectionTable } from "@/db/schema";
 import { getAdminSession } from "@/lib/admin/session";
 import { PRODUCT_IMAGES_BUCKET, uploadToStorage } from "@/lib/supabase/storage";
 import { slugify } from "@/lib/utils";
+import { collectionFormSchema, firstError } from "@/lib/validators";
 
 export type CollectionResult = { error?: string; ok?: boolean };
 
@@ -14,14 +15,22 @@ export async function createCollection(formData: FormData): Promise<CollectionRe
   const session = await getAdminSession();
   if (!session) return { error: "Not authorized." };
 
-  const name = String(formData.get("name") ?? "").trim();
-  let slug = String(formData.get("slug") ?? "")
-    .trim()
-    .toLowerCase();
-  const description = String(formData.get("description") ?? "").trim() || null;
-  const image = String(formData.get("image") ?? "").trim() || null;
+  const input = {
+    name: String(formData.get("name") ?? "").trim(),
+    slug: String(formData.get("slug") ?? "")
+      .trim()
+      .toLowerCase(),
+    description: String(formData.get("description") ?? "").trim(),
+    image: String(formData.get("image") ?? "").trim(),
+  };
 
-  if (!name) return { error: "Name is required." };
+  const parsed = collectionFormSchema.safeParse(input);
+  if (!parsed.success) return { error: firstError(parsed.error) };
+  const { name, slug: slugInput, description: desc, image: img } = parsed.data;
+  let slug = slugInput;
+  const description = desc || null;
+  const image = img || null;
+
   if (!slug) slug = slugify(name);
 
   const existing = await db.query.collectionTable.findFirst({

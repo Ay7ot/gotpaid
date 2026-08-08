@@ -6,6 +6,7 @@ import { db } from "@/db/index";
 import { dropTable, productTable } from "@/db/schema";
 import { getAdminSession } from "@/lib/admin/session";
 import { slugify } from "@/lib/utils";
+import { z } from "zod";
 
 export type DropResult = { error?: string; ok?: boolean };
 
@@ -25,6 +26,9 @@ export async function saveDrop(formData: FormData): Promise<DropResult> {
   const endAtRaw = String(formData.get("endAt") ?? "");
   const statusRaw = String(formData.get("status") ?? "draft");
   const productIds = formData.getAll("productIds").map(String).filter(Boolean);
+
+  const idsParsed = z.array(z.string().uuid()).safeParse(productIds);
+  if (!idsParsed.success) return { error: "Invalid product selection." };
 
   if (!name) return { error: "Name is required." };
   if (!slug) slug = slugify(name);

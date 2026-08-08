@@ -416,18 +416,18 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.16 Security hardening
 
-- [ ] **P1.16.1** Rate limiting:
+- [x] **P1.16.1** Rate limiting:
   - Checkout, login, webhook, password-reset endpoints.
   - Use Vercel/Upstash or middleware-level rate limiting.
   - Verification: Rapid repeated requests are throttled.
-- [ ] **P1.16.2** Input validation:
+- [x] **P1.16.2** Input validation:
   - Zod schemas for all forms and API payloads.
   - Verification: Malformed payloads return 400 errors.
-- [ ] **P1.16.3** Secrets management:
+- [x] **P1.16.3** Secrets management:
   - Paystack secret key never exposed client-side.
   - Admin session secret separate from any customer auth secret.
   - Verification: No secret keys in client bundle (`npm run build` + search bundle).
-- [ ] **P1.16.4** SQL injection protection:
+- [x] **P1.16.4** SQL injection protection:
   - Only use ORM query builder/raw queries with parameterized inputs.
   - Verification: No string-concatenated SQL in codebase.
 

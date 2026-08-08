@@ -4,47 +4,50 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { db } from "@/db/index";
 import { orderTable } from "@/db/schema";
-import { isValidPhone, normalizePhone } from "@/lib/nigeria";
-import { createOrder, type OrderItemInput } from "@/lib/orders";
+import { normalizePhone } from "@/lib/nigeria";
+import { createOrder } from "@/lib/orders";
 import { getPaymentProvider } from "@/lib/payments";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { checkoutSchema, firstError } from "@/lib/validators";
 
 export type CheckoutState = { error?: string } | undefined;
 
-const EMAIL_RE = /^\S+@\S+\.\S+$/;
-
 export async function submitCheckout(_prevState: CheckoutState, formData: FormData) {
   const itemsRaw = String(formData.get("items") ?? "[]");
-  let items: OrderItemInput[] = [];
+  let items: unknown;
   try {
-    items = JSON.parse(itemsRaw) as OrderItemInput[];
+    items = JSON.parse(itemsRaw);
   } catch {
     return { error: "Your cart could not be read. Please try again." };
   }
 
-  const name = String(formData.get("name") ?? "").trim();
-  const email = String(formData.get("email") ?? "")
-    .trim()
-    .toLowerCase();
-  const phone = String(formData.get("phone") ?? "").trim();
-  const state = String(formData.get("state") ?? "").trim();
-  const city = String(formData.get("city") ?? "").trim();
-  const street = String(formData.get("street") ?? "").trim();
-  const landmark = String(formData.get("landmark") ?? "").trim();
+  const input = {
+    items,
+    name: String(formData.get("name") ?? "").trim(),
+    email: String(formData.get("email") ?? "")
+      .trim()
+      .toLowerCase(),
+    phone: String(formData.get("phone") ?? "").trim(),
+    state: String(formData.get("state") ?? "").trim(),
+    city: String(formData.get("city") ?? "").trim(),
+    street: String(formData.get("street") ?? "").trim(),
+    landmark: String(formData.get("landmark") ?? "").trim(),
+  };
 
-  if (!items.length) return { error: "Your cart is empty." };
-  if (!name) return { error: "Enter the recipient name." };
-  if (!email || !EMAIL_RE.test(email)) return { error: "Enter a valid email for your receipt." };
-  if (!phone || !isValidPhone(phone)) {
-    return { error: "Enter a valid Nigerian phone number (e.g. 0801 234 5678)." };
-  }
-  if (!state || !city || !street) {
-    return { error: "Enter your delivery state, city, and street address." };
+  const parsed = checkoutSchema.safeParse(input);
+  if (!parsed.success) return { error: firstError(parsed.error) };
+  const { items: validItems, name, email, phone, state, city, street, landmark } = parsed.data;
+
+  const ip = await getClientIp();
+  const limited = await checkRateLimit(`checkout:${ip}`, 10, 600);
+  if (!limited.ok) {
+    return { error: "Too many orders from this device. Try again in a few minutes." };
   }
 
   let authorizationUrl: string;
   try {
     const order = await createOrder({
-      items,
+      items: validItems,
       customer: { name, email, phone: normalizePhone(phone) },
       address: {
         recipientName: name,
