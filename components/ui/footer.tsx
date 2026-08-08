@@ -4,6 +4,7 @@ const policyLinks = [
   { href: "/shipping", label: "SHIPPING" },
   { href: "/returns", label: "RETURNS" },
   { href: "/size-guide", label: "SIZE GUIDE" },
+  { href: "/contact", label: "CONTACT" },
   { href: "/faq", label: "FAQ" },
 ];
 

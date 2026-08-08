@@ -319,7 +319,7 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.9 Trust & content pages
 
-- [ ] **P1.9.1** Build static/SSR content pages:
+- [x] **P1.9.1** Build static/SSR content pages:
   - `/about` — brand story.
   - `/size-guide` — size guide.
   - `/shipping` — shipping & delivery policy.
