@@ -1,7 +1,15 @@
 import { jwtVerify, SignJWT } from "jose";
+import { cookies } from "next/headers";
 
 export const ADMIN_SESSION_COOKIE = "admin_session";
 export const ADMIN_SESSION_MAX_AGE = 60 * 60 * 12;
+
+export async function getAdminSession(): Promise<AdminSessionPayload | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+  if (!token) return null;
+  return verifyAdminSessionToken(token);
+}
 
 const ALGORITHM = "HS256";
 

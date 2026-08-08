@@ -343,23 +343,23 @@ _The goal of Phase 1 is to launch. Everything here must work end-to-end before a
 
 ### P1.11 Admin: product management
 
-- [ ] **P1.11.1** Product list page:
+- [x] **P1.11.1** Product list page:
   - Dense table with thumbnail, name, base price, status, stock summary.
   - Filters: status, collection, drop.
   - Search by name/sku.
   - Verification: List loads quickly; pagination works.
-- [ ] **P1.11.2** Product create/edit page:
+- [x] **P1.11.2** Product create/edit page:
   - Fields: name, slug (auto-generated), description, category, collection, drop, status.
   - Status: `draft`, `published`, `archived`.
   - Verification: Creating a draft product does not show it on storefront.
 - [ ] **P1.11.3** Multi-image upload with drag-to-reorder:
   - Store image URLs in an `ProductImage` table with ordering.
   - Verification: Images upload, reorder, and display on PDP in the correct order.
-- [ ] **P1.11.4** Variant management:
+- [x] **P1.11.4** Variant management:
   - Add/remove size × color combinations.
   - Set SKU, price override, stock quantity per variant.
   - Verification: Variant changes reflect on PDP immediately.
-- [ ] **P1.11.5** Bulk stock update (simple UI version):
+- [x] **P1.11.5** Bulk stock update (simple UI version):
   - Inline editing of stock per variant on product detail.
   - Verification: Stock update changes PDP availability.
 
