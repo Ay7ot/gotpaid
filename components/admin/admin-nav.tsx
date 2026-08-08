@@ -10,7 +10,9 @@ export function AdminNav({ items }: { items: AdminNavItem[] }) {
   const pathname = usePathname();
 
   return items.map((item) => {
-    const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+    const active =
+      pathname === item.href ||
+      (item.href !== "/admin" && pathname.startsWith(`${item.href}/`));
     return (
       <Link
         key={item.href}
