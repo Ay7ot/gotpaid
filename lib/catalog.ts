@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gt, ne, sql, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, ne, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db/index";
 import {
   collectionTable,
@@ -151,11 +151,7 @@ export async function searchProducts(filters: ProductFilters = {}): Promise<Prod
 
   const [rows, count] = await Promise.all([
     db
-      .select({
-        product: productTable,
-        price: sql<number>`coalesce(${minPriceSql}, 0)`,
-        hasStock: hasStockSql,
-      })
+      .select({ product: productTable })
       .from(productTable)
       .where(and(...where))
       .orderBy(orderBy)
@@ -168,15 +164,41 @@ export async function searchProducts(filters: ProductFilters = {}): Promise<Prod
   ]);
 
   return {
-    products: rows.map((row) => ({
-      product: row.product,
-      price: row.price,
-      soldOut: !row.hasStock,
-    })),
+    products: await attachPricing(rows.map((row) => row.product)),
     total: Number(count[0]?.count ?? 0),
     page,
     perPage,
   };
+}
+
+async function attachPricing(products: Product[]): Promise<CatalogProduct[]> {
+  if (!products.length) return [];
+  const ids = products.map((p) => p.id);
+  const variants = await db.select().from(variantTable).where(inArray(variantTable.productId, ids));
+
+  const variantsByProduct = new Map<string, Variant[]>();
+  for (const variant of variants) {
+    const list = variantsByProduct.get(variant.productId) ?? [];
+    list.push(variant);
+    variantsByProduct.set(variant.productId, list);
+  }
+
+  const soldOut = new Map<string, boolean>();
+  for (const product of products) soldOut.set(product.id, true);
+  for (const variant of variants) {
+    if (variant.stockQuantity - variant.reservedQuantity > 0) {
+      soldOut.set(variant.productId, false);
+    }
+  }
+  for (const product of products) {
+    if (!soldOut.has(product.id)) soldOut.set(product.id, false);
+  }
+
+  return products.map((product) => ({
+    product,
+    price: productPrice(variantsByProduct.get(product.id) ?? []),
+    soldOut: soldOut.get(product.id) ?? false,
+  }));
 }
 
 export async function getRelatedProducts(product: Product, limit = 4) {

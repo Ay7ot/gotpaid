@@ -74,9 +74,9 @@ async function main() {
       category: "Outerwear",
       dropId: okrika.id,
       variants: [
-        { size: "S", stock: 12 },
-        { size: "M", stock: 8 },
-        { size: "L", stock: 3 },
+        { size: "S", stock: 0 },
+        { size: "M", stock: 0 },
+        { size: "L", stock: 0 },
         { size: "XL", stock: 0 },
       ],
     },
@@ -100,8 +100,8 @@ async function main() {
       category: "Bottoms",
       dropId: okrika.id,
       variants: [
-        { size: "30", stock: 6 },
-        { size: "32", stock: 4 },
+        { size: "30", stock: 0 },
+        { size: "32", stock: 0 },
         { size: "34", stock: 0 },
       ],
     },
