@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Hero } from "@/components/storefront/hero";
+import { HeroVideo } from "@/components/storefront/hero-video";
 import { Marquee } from "@/components/storefront/marquee";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -186,7 +187,8 @@ function BrandTeaser() {
 function HeroStateNone() {
   return (
     <section className="border-hairline bg-void relative w-full overflow-hidden border-b">
-      <div className="mx-auto flex min-h-[75vh] w-full max-w-6xl flex-col justify-end px-4 pt-24 pb-12 sm:px-6">
+      <HeroVideo />
+      <div className="relative z-10 mx-auto flex min-h-[75vh] w-full max-w-6xl flex-col justify-end px-4 pt-24 pb-12 sm:px-6">
         <p className="text-micro text-paper/60 font-mono tracking-[0.2em] uppercase">
           New arrivals
         </p>
