@@ -1,25 +1,15 @@
 import { and, asc, desc, eq, gt, inArray, ne, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db/index";
 import { cache } from "react";
-import { unstable_cache } from "next/cache";
 
-function cached<F extends (...args: never[]) => Promise<unknown>>(
-  fn: F,
-  key: string,
-  revalidate = 60,
-): F {
-  const wrapped = cache((...args: Parameters<F>) =>
-    unstable_cache(() => fn(...args), [key, ...args.map((arg) => JSON.stringify(arg))], {
-      revalidate,
-      tags: ["catalog"],
-    })(),
-  );
-  return wrapped as F;
+function cached<F extends (...args: never[]) => Promise<unknown>>(fn: F): F {
+  return cache(fn) as F;
 }
 
 import {
   collectionTable,
   dropTable,
+  productImageTable,
   productTable,
   variantTable,
   type Product,
@@ -44,6 +34,7 @@ export type CatalogProduct = {
   product: Product;
   price: number;
   soldOut: boolean;
+  image: string | null;
 };
 
 async function productsWithPrice(
@@ -52,14 +43,15 @@ async function productsWithPrice(
 ): Promise<CatalogProduct[]> {
   const rows = await db.query.productTable.findMany({
     where,
-    with: { variants: true },
+    with: { variants: true, images: true },
     orderBy: desc(productTable.createdAt),
     limit,
   });
-  return rows.map(({ variants, ...product }) => ({
+  return rows.map(({ variants, images, ...product }) => ({
     product,
     price: productPrice(variants),
     soldOut: productSoldOut(variants),
+    image: [...images].sort((a, b) => a.position - b.position)[0]?.url ?? null,
   }));
 }
 
@@ -191,13 +183,25 @@ async function searchProductsRaw(filters: ProductFilters = {}): Promise<ProductS
 async function attachPricing(products: Product[]): Promise<CatalogProduct[]> {
   if (!products.length) return [];
   const ids = products.map((p) => p.id);
-  const variants = await db.select().from(variantTable).where(inArray(variantTable.productId, ids));
+  const [variants, images] = await Promise.all([
+    db.select().from(variantTable).where(inArray(variantTable.productId, ids)),
+    db
+      .select()
+      .from(productImageTable)
+      .where(inArray(productImageTable.productId, ids))
+      .orderBy(asc(productImageTable.position)),
+  ]);
 
   const variantsByProduct = new Map<string, Variant[]>();
   for (const variant of variants) {
     const list = variantsByProduct.get(variant.productId) ?? [];
     list.push(variant);
     variantsByProduct.set(variant.productId, list);
+  }
+
+  const firstImage = new Map<string, string>();
+  for (const image of images) {
+    if (!firstImage.has(image.productId)) firstImage.set(image.productId, image.url);
   }
 
   const soldOut = new Map<string, boolean>();
@@ -215,6 +219,7 @@ async function attachPricing(products: Product[]): Promise<CatalogProduct[]> {
     product,
     price: productPrice(variantsByProduct.get(product.id) ?? []),
     soldOut: soldOut.get(product.id) ?? false,
+    image: firstImage.get(product.id) ?? null,
   }));
 }
 
@@ -248,11 +253,11 @@ async function getProductFacetsRaw() {
   };
 }
 
-export const getPrimaryDrop = cached(getPrimaryDropRaw, "getPrimaryDrop");
-export const getFeaturedProducts = cached(getFeaturedProductsRaw, "getFeaturedProducts");
-export const getDropBySlug = cached(getDropBySlugRaw, "getDropBySlug");
-export const getDropProducts = cached(getDropProductsRaw, "getDropProducts");
-export const getCollections = cached(getCollectionsRaw, "getCollections");
-export const searchProducts = cached(searchProductsRaw, "searchProducts");
-export const getRelatedProducts = cached(getRelatedProductsRaw, "getRelatedProducts");
-export const getProductFacets = cached(getProductFacetsRaw, "getProductFacets");
+export const getPrimaryDrop = cached(getPrimaryDropRaw);
+export const getFeaturedProducts = cached(getFeaturedProductsRaw);
+export const getDropBySlug = cached(getDropBySlugRaw);
+export const getDropProducts = cached(getDropProductsRaw);
+export const getCollections = cached(getCollectionsRaw);
+export const searchProducts = cached(searchProductsRaw);
+export const getRelatedProducts = cached(getRelatedProductsRaw);
+export const getProductFacets = cached(getProductFacetsRaw);

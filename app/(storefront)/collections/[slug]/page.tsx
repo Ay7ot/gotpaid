@@ -44,12 +44,13 @@ export default async function CollectionPage({
 
   const [result, facets] = await Promise.all([searchProducts(filters), getProductFacets()]);
 
-  const products = result.products.map(({ product, price, soldOut }) => ({
+  const products = result.products.map(({ product, price, soldOut, image }) => ({
     id: product.id,
     slug: product.slug,
     name: product.name,
     price,
     soldOut,
+    image,
   }));
 
   return (

@@ -126,16 +126,19 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <section className="mt-20">
           <h2 className="text-micro text-smoke font-mono tracking-[0.18em] uppercase">Related</h2>
           <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-4">
-            {related.map(({ product: item, price: itemPrice, soldOut: itemSoldOut }) => (
-              <ProductCard
-                key={item.id}
-                name={item.name}
-                price={itemPrice}
-                href={`/products/${item.slug}`}
-                badge={itemSoldOut ? "SOLD OUT" : undefined}
-                badgeTone="alert"
-              />
-            ))}
+            {related.map(
+              ({ product: item, price: itemPrice, soldOut: itemSoldOut, image: itemImage }) => (
+                <ProductCard
+                  key={item.id}
+                  name={item.name}
+                  price={itemPrice}
+                  href={`/products/${item.slug}`}
+                  imageSrc={itemImage}
+                  badge={itemSoldOut ? "SOLD OUT" : undefined}
+                  badgeTone="alert"
+                />
+              ),
+            )}
           </div>
         </section>
       ) : null}

@@ -1,7 +1,7 @@
 "use server";
 
 import { eq, sql } from "drizzle-orm";
-import { revalidatePath, updateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { db } from "@/db/index";
 import { orderItemTable, orderTable, variantTable } from "@/db/schema";
 import { type OrderStatus } from "@/lib/admin-orders";
@@ -42,8 +42,7 @@ export async function updateOrderStatus(formData: FormData): Promise<OrderResult
 
     revalidatePath("/admin/orders");
     revalidatePath(`/admin/orders/${order.orderNumber}`);
-    updateTag("catalog");
-    return { ok: true };
+        return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }
@@ -90,8 +89,7 @@ export async function refundOrder(formData: FormData): Promise<OrderResult> {
 
     revalidatePath("/admin/orders");
     revalidatePath(`/admin/orders/${order.orderNumber}`);
-    updateTag("catalog");
-    return { ok: true };
+        return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }

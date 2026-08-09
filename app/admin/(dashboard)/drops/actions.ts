@@ -1,7 +1,7 @@
 "use server";
 
 import { eq, inArray } from "drizzle-orm";
-import { revalidatePath, updateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { db } from "@/db/index";
 import { dropTable, productTable } from "@/db/schema";
 import { getAdminSession } from "@/lib/admin/session";
@@ -74,8 +74,7 @@ export async function saveDrop(formData: FormData): Promise<DropResult> {
     revalidatePath("/drops");
     revalidatePath(`/drops/${slug}`);
     revalidatePath("/admin/drops");
-    updateTag("catalog");
-    return { ok: true };
+        return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }
@@ -92,8 +91,7 @@ export async function deleteDrop(formData: FormData): Promise<DropResult> {
     await db.delete(dropTable).where(eq(dropTable.id, id));
     revalidatePath("/");
     revalidatePath("/admin/drops");
-    updateTag("catalog");
-    return { ok: true };
+        return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }

@@ -10,6 +10,7 @@ export type GridProduct = {
   name: string;
   price: number;
   soldOut: boolean;
+  image: string | null;
 };
 
 export function ProductGrid({
@@ -61,6 +62,7 @@ export function ProductGrid({
             name={item.name}
             price={item.price}
             href={`/products/${item.slug}`}
+            imageSrc={item.image}
             badge={item.soldOut ? "SOLD OUT" : undefined}
             badgeTone="alert"
           />

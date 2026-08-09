@@ -1,7 +1,7 @@
 "use server";
 
 import { and, eq, notInArray } from "drizzle-orm";
-import { revalidatePath, updateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { db } from "@/db/index";
 import { productImageTable, productTable, variantTable } from "@/db/schema";
 import { getAdminSession } from "@/lib/admin/session";
@@ -131,8 +131,7 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
     revalidatePath("/shop");
     revalidatePath(`/products/${slug}`);
     revalidatePath("/admin/products");
-    updateTag("catalog");
-    return { ok: true };
+        return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }
@@ -150,8 +149,7 @@ export async function deleteProduct(formData: FormData): Promise<SaveResult> {
     revalidatePath("/");
     revalidatePath("/shop");
     revalidatePath("/admin/products");
-    updateTag("catalog");
-    return { ok: true };
+        return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }

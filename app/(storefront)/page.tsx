@@ -91,12 +91,13 @@ function FeaturedSection({ products }: { products: CatalogProduct[] }) {
         </Link>
       </div>
       <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-4">
-        {products.map(({ product, price, soldOut }) => (
+        {products.map(({ product, price, soldOut, image }) => (
           <ProductCard
             key={product.id}
             name={product.name}
             price={price}
             href={`/products/${product.slug}`}
+            imageSrc={image}
             badge={soldOut ? "SOLD OUT" : undefined}
             badgeTone="alert"
           />
