@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { db } from "@/db/index";
 import { adminUserTable } from "@/db/schema";
 import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from "@/lib/admin/session";
@@ -17,5 +18,10 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
   });
   if (!admin) redirect("/admin/login");
 
-  return <AdminShell admin={{ name: admin.name, role: session.role }}>{children}</AdminShell>;
+  return (
+    <AdminShell admin={{ name: admin.name, role: session.role }}>
+      <ScrollToTop />
+      {children}
+    </AdminShell>
+  );
 }

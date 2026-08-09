@@ -161,7 +161,7 @@ export async function createOrder(input: NewOrderInput) {
 
   const order = await getOrderByNumber(orderNumber);
   if (!order) throw new Error("Order could not be created.");
-    return order;
+  return order;
 }
 
 export async function getOrderByNumber(orderNumber: string) {
@@ -231,7 +231,7 @@ export async function markOrderPaid(orderNumber: string): Promise<Order> {
       .returning();
     return updated;
   });
-    return result;
+  return result;
 }
 
 export async function releaseReservation(orderNumber: string) {
@@ -257,4 +257,4 @@ export async function releaseReservation(orderNumber: string) {
         .where(eq(variantTable.id, item.variantId));
     }
   });
-  }
+}

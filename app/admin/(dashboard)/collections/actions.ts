@@ -43,7 +43,7 @@ export async function createCollection(formData: FormData): Promise<CollectionRe
     revalidatePath("/");
     revalidatePath("/admin/products");
     revalidatePath("/admin/collections");
-        return { ok: true };
+    return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }
@@ -82,7 +82,7 @@ export async function deleteCollection(formData: FormData): Promise<CollectionRe
     revalidatePath("/");
     revalidatePath("/admin/products");
     revalidatePath("/admin/collections");
-        return { ok: true };
+    return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }

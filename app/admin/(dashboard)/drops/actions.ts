@@ -74,7 +74,7 @@ export async function saveDrop(formData: FormData): Promise<DropResult> {
     revalidatePath("/drops");
     revalidatePath(`/drops/${slug}`);
     revalidatePath("/admin/drops");
-        return { ok: true };
+    return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }
@@ -91,7 +91,7 @@ export async function deleteDrop(formData: FormData): Promise<DropResult> {
     await db.delete(dropTable).where(eq(dropTable.id, id));
     revalidatePath("/");
     revalidatePath("/admin/drops");
-        return { ok: true };
+    return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }

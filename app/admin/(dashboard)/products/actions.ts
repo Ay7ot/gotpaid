@@ -131,7 +131,7 @@ export async function saveProduct(formData: FormData): Promise<SaveResult> {
     revalidatePath("/shop");
     revalidatePath(`/products/${slug}`);
     revalidatePath("/admin/products");
-        return { ok: true };
+    return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }
@@ -149,7 +149,7 @@ export async function deleteProduct(formData: FormData): Promise<SaveResult> {
     revalidatePath("/");
     revalidatePath("/shop");
     revalidatePath("/admin/products");
-        return { ok: true };
+    return { ok: true };
   } catch (error) {
     return { error: (error as Error).message };
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
@@ -31,11 +31,35 @@ export function PdpBuyBox({
 }) {
   const router = useRouter();
   const { addItem } = useCart();
-  const [selectedId, setSelectedId] = useState<string | null>(() => {
-    const first = variants.find((v) => v.stockQuantity - v.reservedQuantity > 0);
-    return first?.id ?? null;
-  });
   const [added, setAdded] = useState(false);
+
+  const colors = useMemo(() => {
+    const order: string[] = [];
+    const seen = new Set<string>();
+    for (const v of variants) {
+      const color = v.color ?? "";
+      if (!seen.has(color)) {
+        seen.add(color);
+        order.push(color);
+      }
+    }
+    return order;
+  }, [variants]);
+
+  const hasColors = colors.length > 1;
+
+  const [selectedColor, setSelectedColor] = useState<string>(() => colors[0] ?? "");
+  const colorVariants = useMemo(
+    () => variants.filter((v) => (v.color ?? "") === selectedColor),
+    [variants, selectedColor],
+  );
+
+  const [selectedId, setSelectedId] = useState<string | null>(() => {
+    const visible = variants.filter((v) => (v.color ?? "") === (colors[0] ?? ""));
+    return (
+      visible.find((v) => v.stockQuantity - v.reservedQuantity > 0)?.id ?? visible[0]?.id ?? null
+    );
+  });
 
   const selected = variants.find((v) => v.id === selectedId) ?? null;
   const available = variants.reduce((n, v) => n + (v.stockQuantity - v.reservedQuantity), 0);
@@ -43,8 +67,15 @@ export function PdpBuyBox({
   const lowStock = !soldOut && available <= 3;
   const price = selected?.priceOverride ?? basePrice;
   const variantLabel = selected
-    ? [selected.size, selected.color].filter(Boolean).join(" / ")
+    ? [selected.color, selected.size].filter(Boolean).join(" / ")
     : null;
+
+  function selectColor(color: string) {
+    setSelectedColor(color);
+    const visible = variants.filter((v) => (v.color ?? "") === color);
+    const first = visible.find((v) => v.stockQuantity - v.reservedQuantity > 0);
+    setSelectedId(first?.id ?? visible[0]?.id ?? null);
+  }
 
   function addToCart() {
     if (!selected) return;
@@ -66,10 +97,39 @@ export function PdpBuyBox({
         <p className="text-title text-void font-mono">{formatNaira(price)}</p>
       </div>
 
+      {hasColors ? (
+        <div className="mt-6">
+          <p className="text-micro text-smoke font-mono tracking-[0.14em] uppercase">
+            Color · {selectedColor || "Default"}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {colors.map((color) => {
+              const active = color === selectedColor;
+              return (
+                <button
+                  key={color || "default"}
+                  type="button"
+                  onClick={() => selectColor(color)}
+                  aria-pressed={active}
+                  className={cn(
+                    "text-caption flex h-10 items-center justify-center border px-4 font-mono tracking-[0.06em] uppercase transition-colors",
+                    active
+                      ? "border-void bg-void text-paper"
+                      : "border-hairline text-void hover:border-void",
+                  )}
+                >
+                  {color || "Default"}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
+
       <div className="mt-6">
         <p className="text-micro text-smoke font-mono tracking-[0.14em] uppercase">Size</p>
         <div className="mt-2 flex flex-wrap gap-2">
-          {variants.map((variant) => {
+          {colorVariants.map((variant) => {
             const variantAvailable = variant.stockQuantity - variant.reservedQuantity > 0;
             const active = variant.id === selectedId;
             return (

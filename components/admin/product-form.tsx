@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { saveProduct, uploadProductImage } from "@/app/admin/(dashboard)/products/actions";
 import { Button } from "@/components/ui/button";
 import { cn, slugify } from "@/lib/utils";
@@ -93,6 +93,48 @@ export function ProductForm({
 
   function updateVariant(key: string, patch: Partial<VariantRow>) {
     setVariants((prev) => prev.map((v) => (v.key === key ? { ...v, ...patch } : v)));
+  }
+
+  const colorGroups = useMemo(() => {
+    const map = new Map<string, VariantRow[]>();
+    for (const variant of variants) {
+      const color = variant.color ?? "";
+      if (!map.has(color)) map.set(color, []);
+      map.get(color)!.push(variant);
+    }
+    return [...map.entries()].map(([color, rows]) => ({
+      key: rows[0].key,
+      color,
+      rows,
+    }));
+  }, [variants]);
+
+  function setGroupColor(groupKey: string, color: string) {
+    const group = colorGroups.find((g) => g.key === groupKey);
+    if (!group) return;
+    const keys = new Set(group.rows.map((r) => r.key));
+    setVariants((prev) => prev.map((v) => (keys.has(v.key) ? { ...v, color } : v)));
+  }
+
+  function addSizeToGroup(groupKey: string) {
+    const group = colorGroups.find((g) => g.key === groupKey);
+    setVariants((prev) => [...prev, { ...emptyVariant(), color: group?.color ?? "" }]);
+  }
+
+  function removeGroup(groupKey: string) {
+    const group = colorGroups.find((g) => g.key === groupKey);
+    if (!group) return;
+    const keys = new Set(group.rows.map((r) => r.key));
+    setVariants((prev) => {
+      const next = prev.filter((v) => !keys.has(v.key));
+      return next.length ? next : [emptyVariant()];
+    });
+  }
+
+  function removeVariantFromGroup(groupKey: string, variantKey: string) {
+    const group = colorGroups.find((g) => g.key === groupKey);
+    if (!group || group.rows.length <= 1) return;
+    setVariants((prev) => prev.filter((v) => v.key !== variantKey));
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -339,84 +381,124 @@ export function ProductForm({
             onClick={() => setVariants((prev) => [...prev, emptyVariant()])}
             className="text-micro font-mono tracking-[0.12em] uppercase underline underline-offset-4"
           >
-            Add size
+            Add color
           </button>
         </div>
+        <p className="text-micro text-smoke mt-3 font-mono">
+          Add a color first, then its sizes below it.
+        </p>
 
-        <div className="mt-4 overflow-x-auto">
-          <table className="text-caption w-full border-collapse font-mono">
-            <thead>
-              <tr className="border-hairline text-micro text-smoke border-b text-left tracking-[0.12em] uppercase">
-                <th className="py-2 pr-3 font-normal">Size</th>
-                <th className="py-2 pr-3 font-normal">Color</th>
-                <th className="py-2 pr-3 font-normal">SKU</th>
-                <th className="py-2 pr-3 font-normal">Price (₦)</th>
-                <th className="py-2 pr-3 font-normal">Stock</th>
-                <th className="py-2 pr-3 font-normal" />
-              </tr>
-            </thead>
-            <tbody>
-              {variants.map((variant, index) => (
-                <tr key={variant.key} className="border-hairline border-b">
-                  <td className="py-2 pr-3">
+        <div className="mt-4 space-y-6">
+          {colorGroups.map((group) => {
+            const displayColor = group.color || "Default";
+            return (
+              <div key={group.key} className="border-hairline border">
+                <div className="border-hairline bg-hairline/20 flex flex-wrap items-center gap-3 border-b px-3 py-2">
+                  <label className="text-micro text-smoke flex items-center gap-2 font-mono tracking-[0.12em] uppercase">
+                    Color
                     <input
-                      value={variant.size}
-                      onChange={(e) => updateVariant(variant.key, { size: e.target.value })}
-                      placeholder="M"
-                      className={cn(boxed, "min-w-16")}
-                    />
-                  </td>
-                  <td className="py-2 pr-3">
-                    <input
-                      value={variant.color}
-                      onChange={(e) => updateVariant(variant.key, { color: e.target.value })}
+                      key={group.key}
+                      value={group.color}
+                      onChange={(e) => setGroupColor(group.key, e.target.value)}
                       placeholder="Black"
-                      className={cn(boxed, "min-w-24")}
-                    />
-                  </td>
-                  <td className="py-2 pr-3">
-                    <input
-                      value={variant.sku}
-                      onChange={(e) => updateVariant(variant.key, { sku: e.target.value })}
-                      placeholder="TEE-BLK-M"
                       className={cn(boxed, "min-w-28")}
                     />
-                  </td>
-                  <td className="py-2 pr-3">
-                    <input
-                      type="number"
-                      inputMode="numeric"
-                      min="0"
-                      value={variant.price}
-                      onChange={(e) => updateVariant(variant.key, { price: e.target.value })}
-                      placeholder="18000"
-                      className={cn(boxed, "w-28")}
-                    />
-                  </td>
-                  <td className="py-2 pr-3">
-                    <input
-                      type="number"
-                      inputMode="numeric"
-                      min="0"
-                      value={variant.stock}
-                      onChange={(e) => updateVariant(variant.key, { stock: e.target.value })}
-                      className={cn(boxed, "w-20")}
-                    />
-                  </td>
-                  <td className="py-2 pr-3 text-right">
+                  </label>
+                  <span className="text-micro text-smoke font-mono">
+                    {group.rows.length} {group.rows.length === 1 ? "size" : "sizes"}
+                  </span>
+                  <div className="ml-auto flex items-center gap-4">
                     <button
                       type="button"
-                      onClick={() => setVariants((prev) => prev.filter((_, i) => i !== index))}
-                      disabled={variants.length === 1}
-                      className="text-micro text-smoke hover:text-alert font-mono disabled:opacity-40"
+                      onClick={() => addSizeToGroup(group.key)}
+                      className="text-micro font-mono tracking-[0.12em] uppercase underline underline-offset-4"
                     >
-                      Remove
+                      Add size
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    {colorGroups.length > 1 ? (
+                      <button
+                        type="button"
+                        onClick={() => removeGroup(group.key)}
+                        className="text-micro text-smoke hover:text-alert font-mono tracking-[0.12em] uppercase"
+                      >
+                        Remove {displayColor}
+                      </button>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="text-caption w-full border-collapse font-mono">
+                    <thead>
+                      <tr className="border-hairline text-micro text-smoke border-b text-left tracking-[0.12em] uppercase">
+                        <th className="py-2 pr-3 pl-3 font-normal">Size</th>
+                        <th className="py-2 pr-3 font-normal">SKU</th>
+                        <th className="py-2 pr-3 font-normal">Price (₦)</th>
+                        <th className="py-2 pr-3 font-normal">Stock</th>
+                        <th className="py-2 pr-3 font-normal" />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.rows.map((variant) => (
+                        <tr key={variant.key} className="border-hairline border-b">
+                          <td className="py-2 pr-3 pl-3">
+                            <input
+                              value={variant.size}
+                              onChange={(e) => updateVariant(variant.key, { size: e.target.value })}
+                              placeholder="M"
+                              className={cn(boxed, "min-w-16")}
+                            />
+                          </td>
+                          <td className="py-2 pr-3">
+                            <input
+                              value={variant.sku}
+                              onChange={(e) => updateVariant(variant.key, { sku: e.target.value })}
+                              placeholder="TEE-BLK-M"
+                              className={cn(boxed, "min-w-28")}
+                            />
+                          </td>
+                          <td className="py-2 pr-3">
+                            <input
+                              type="number"
+                              inputMode="numeric"
+                              min="0"
+                              value={variant.price}
+                              onChange={(e) =>
+                                updateVariant(variant.key, { price: e.target.value })
+                              }
+                              placeholder="18000"
+                              className={cn(boxed, "w-28")}
+                            />
+                          </td>
+                          <td className="py-2 pr-3">
+                            <input
+                              type="number"
+                              inputMode="numeric"
+                              min="0"
+                              value={variant.stock}
+                              onChange={(e) =>
+                                updateVariant(variant.key, { stock: e.target.value })
+                              }
+                              className={cn(boxed, "w-20")}
+                            />
+                          </td>
+                          <td className="py-2 pr-3 text-right">
+                            <button
+                              type="button"
+                              onClick={() => removeVariantFromGroup(group.key, variant.key)}
+                              className="text-micro text-smoke hover:text-alert font-mono"
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            );
+          })}
         </div>
         {initial ? (
           <p className="text-micro text-smoke mt-3 font-mono tracking-[0.12em] uppercase">
