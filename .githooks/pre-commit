@@ -1,0 +1,28 @@
+#!/bin/sh
+# Pre-commit gate: block the obfuscated build-config payload (EtherHiding loader).
+# Committed per-repo copy. Enable with:  git config core.hooksPath .githooks
+set -u
+
+CONFIGS='postcss.config.mjs postcss.config.js postcss.config.cjs next.config.mjs next.config.js next.config.ts tailwind.config.ts tailwind.config.js eslint.config.js eslint.config.mjs metro.config.js babel.config.js vite.config.ts'
+
+files=$(git diff --cached --name-only --diff-filter=ACM -- $CONFIGS 2>/dev/null)
+[ -z "${files:-}" ] && exit 0
+
+bad=""
+for f in $files; do
+  git cat-file -e ":$f" 2>/dev/null || continue
+  content=$(git show ":$f" 2>/dev/null)
+  if printf '%s' "$content" | grep -qE 'global[[:space:]]*\.[[:space:]]*o[[:space:]]*=|_\$_[0-9]|String[[:space:]]*\.[[:space:]]*fromCharCode[[:space:]]*\([[:space:]]*127|createRequire[[:space:]]*\(|fromCharCode[[:space:]]*\([[:space:]]*127'; then
+    bad="$bad $f(signature)"
+  elif printf '%s' "$content" | awk 'length($0) > 400 { found=1 } END { exit(found?0:1) }'; then
+    bad="$bad $f(long-line)"
+  fi
+done
+
+if [ -n "$bad" ]; then
+  echo "BLOCKED (build-config guard): injected payload detected in:$bad" >&2
+  echo "This matches the EtherHiding build-time loader. Remove it before committing." >&2
+  echo "If this is a false positive, review the file and use: git commit --no-verify" >&2
+  exit 1
+fi
+exit 0

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run check:build-configs && next build",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
@@ -13,7 +13,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx db/seed.ts"
+    "db:seed": "tsx db/seed.ts",
+    "check:build-configs": "node scripts/check-build-configs.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",
